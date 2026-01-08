@@ -69,24 +69,26 @@ export default function ToursPage() {
     return (
         <div className="p-8 space-y-8 min-h-screen bg-slate-50/30">
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-black tracking-tight text-slate-900">Tours</h1>
-                    <div className="flex items-center gap-2 mt-2">
-                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100/50">
-                            {totalTours} Total
-                        </span>
-                        <p className="text-[13px] text-slate-500 font-medium">Manage your Morocco tour circuits</p>
+            <div>
+                <div className="flex items-center justify-between">
+                    <div className="flex flex-col md:flex-row items-center gap-2">
+                        <h1 className="text-3xl font-black tracking-tight text-slate-900">Tours</h1>
+                        <div className="flex items-center gap-2 mt-2">
+                            <span className="flex-shrink-0 px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100/50">
+                                {totalTours} Total
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex gap-3">
+                        <Button asChild className="bg-slate-900 hover:bg-slate-800 text-white font-bold uppercase tracking-widest text-[10px] px-6 py-4 rounded-full shadow-lg shadow-slate-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
+                            <Link href="/dashboard/tours/new">
+                                <Plus className="mr-2 h-4 w-4" />
+                                Add New Tour
+                            </Link>
+                        </Button>
                     </div>
                 </div>
-                <div className="flex gap-3">
-                    <Button asChild className="bg-slate-900 hover:bg-slate-800 text-white font-bold uppercase tracking-widest text-[10px] px-6 py-4 rounded-full shadow-lg shadow-slate-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
-                        <Link href="/dashboard/tours/new">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Add New Tour
-                        </Link>
-                    </Button>
-                </div>
+                <p className="text-[13px] text-slate-500 font-medium">Manage your Morocco tour circuits</p>
             </div>
 
             {/* Search */}

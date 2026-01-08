@@ -138,12 +138,15 @@ export default function MessagesPage() {
             {/* Header */}
             <div className="flex justify-between items-end">
                 <div>
-                    <h1 className="text-3xl font-black tracking-tight text-foreground">Messages</h1>
+                    <div className="flex items-center gap-2">
+                        <h1 className="text-3xl font-black tracking-tight text-foreground">Messages</h1>
+                        <div className="text-xs flex-shrink-0 font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
+                            {messages.length} inquiries
+                        </div>
+                    </div>
                     <p className="text-sm text-muted-foreground mt-1">Manage contact form inquiries</p>
                 </div>
-                <div className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
-                    {messages.length} inquiries
-                </div>
+
             </div>
 
             {/* Filters and Search */}
@@ -269,9 +272,9 @@ export default function MessagesPage() {
                                 </div>
                                 <div>
                                     <h2 className="text-2xl font-black tracking-tight text-foreground">{selectedMessage.name}</h2>
-                                    <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
+                                    <div className="flex flex-col md:flex-row items-center gap-3 text-sm text-muted-foreground mt-1">
                                         <span className="font-medium text-primary/80">{selectedMessage.email}</span>
-                                        <span className="opacity-30">•</span>
+                                        <span className="opacity-30 hidden md:block">•</span>
                                         <span>{new Date(selectedMessage.createdAt).toLocaleString()}</span>
                                     </div>
                                 </div>
@@ -317,7 +320,7 @@ export default function MessagesPage() {
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="border-t border-border p-6 bg-muted/5 flex items-center justify-between gap-4">
+                        <div className="border-t border-border p-6 bg-muted/5 flex flex-wrapitems-center justify-between gap-4">
                             <div className="flex gap-2">
                                 <Button
                                     variant="outline"

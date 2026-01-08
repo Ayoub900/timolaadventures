@@ -149,11 +149,14 @@ export default function BookingsPage() {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-black tracking-tight text-slate-900">Bookings</h1>
-                    <div className="flex items-center gap-2 mt-2">
-                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100/50">
+                    <div className="flex items-center gap-2">
+                        <h1 className="text-3xl font-black tracking-tight text-slate-900">Bookings</h1>
+                        <span className="px-2 flex-shrink-0 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100/50">
                             {requests.length} Total
                         </span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+
                         <p className="text-[13px] text-slate-500 font-medium">Manage customer inquiry and tour bookings</p>
                     </div>
                 </div>
@@ -188,80 +191,83 @@ export default function BookingsPage() {
 
             {/* Requests Table */}
             <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
-                <table className="w-full text-left">
-                    <thead>
-                        <tr className="bg-slate-50/50 border-b border-slate-100">
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Customer</th>
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Status</th>
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Circuit</th>
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Travel Dates</th>
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Guests</th>
-                            <th className="px-6 py-4 text-right"></th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                        {filteredRequests.length === 0 ? (
-                            <tr>
-                                <td colSpan={6} className="px-6 py-12 text-center">
-                                    <div className="flex flex-col items-center gap-3">
-                                        <Calendar className="h-10 w-10 text-slate-200" />
-                                        <span className="text-slate-400 font-medium">No bookings found.</span>
-                                    </div>
-                                </td>
+                <div className="overflow-x-auto">
+
+
+                    <table className="w-full text-left">
+                        <thead>
+                            <tr className="bg-slate-50/50 border-b border-slate-100">
+                                <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Customer</th>
+                                <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Status</th>
+                                <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Circuit</th>
+                                <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Travel Dates</th>
+                                <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Guests</th>
+                                <th className="px-6 py-4 text-right"></th>
                             </tr>
-                        ) : (
-                            filteredRequests.map((request) => (
-                                <tr
-                                    key={request.id}
-                                    className="hover:bg-blue-50/30 transition-colors cursor-pointer group"
-                                    onClick={() => setSelectedRequest(request)}
-                                >
-                                    <td className="px-6 py-4">
-                                        <div className="flex items-center gap-4">
-                                            <div className="h-10 w-10 rounded-full bg-white border border-slate-100 flex items-center justify-center text-slate-900 font-bold text-sm shadow-sm group-hover:border-blue-200 group-hover:text-blue-600 transition-all">
-                                                {request.fullName.charAt(0).toUpperCase()}
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <span className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{request.fullName}</span>
-                                                <span className="text-[11px] text-slate-500 font-medium">{request.email}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border inline-flex items-center gap-1.5 ${request.status === "new" ? "bg-red-50 text-red-600 border-red-100" :
-                                            request.status === "contacted" ? "bg-blue-50 text-blue-600 border-blue-100" :
-                                                request.status === "confirmed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
-                                                    "bg-slate-50 text-slate-600 border-slate-100"
-                                            }`}>
-                                            <span className="w-1 h-1 rounded-full bg-current" />
-                                            {request.status.replace("-", " ")}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm font-bold text-slate-700">
-                                        {request.circuitName || <span className="text-slate-400 font-medium italic">General Inquiry</span>}
-                                    </td>
-                                    <td className="px-6 py-4 text-[13px] text-slate-500 font-medium">
-                                        {request.travelDates}
-                                    </td>
-                                    <td className="px-6 py-4 text-[13px] text-slate-500 font-black">
-                                        <div className="flex items-center gap-2">
-                                            <Users className="h-4 w-4 text-slate-300" />
-                                            {request.guests}
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 bg-slate-50 hover:bg-white border border-slate-100 rounded-full opacity-0 group-hover:opacity-100 transition-all">
-                                                <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-500" />
-                                            </Button>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                            {filteredRequests.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} className="px-6 py-12 text-center">
+                                        <div className="flex flex-col items-center gap-3">
+                                            <Calendar className="h-10 w-10 text-slate-200" />
+                                            <span className="text-slate-400 font-medium">No bookings found.</span>
                                         </div>
                                     </td>
                                 </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
-
+                            ) : (
+                                filteredRequests.map((request) => (
+                                    <tr
+                                        key={request.id}
+                                        className="hover:bg-blue-50/30 transition-colors cursor-pointer group"
+                                        onClick={() => setSelectedRequest(request)}
+                                    >
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center gap-4">
+                                                <div className="h-10 w-10 rounded-full bg-white border border-slate-100 flex items-center justify-center text-slate-900 font-bold text-sm shadow-sm group-hover:border-blue-200 group-hover:text-blue-600 transition-all">
+                                                    {request.fullName.charAt(0).toUpperCase()}
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{request.fullName}</span>
+                                                    <span className="text-[11px] text-slate-500 font-medium">{request.email}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border inline-flex items-center gap-1.5 ${request.status === "new" ? "bg-red-50 text-red-600 border-red-100" :
+                                                request.status === "contacted" ? "bg-blue-50 text-blue-600 border-blue-100" :
+                                                    request.status === "confirmed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
+                                                        "bg-slate-50 text-slate-600 border-slate-100"
+                                                }`}>
+                                                <span className="w-1 h-1 rounded-full bg-current" />
+                                                {request.status.replace("-", " ")}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-bold text-slate-700">
+                                            {request.circuitName || <span className="text-slate-400 font-medium italic">General Inquiry</span>}
+                                        </td>
+                                        <td className="px-6 py-4 text-[13px] text-slate-500 font-medium">
+                                            {request.travelDates}
+                                        </td>
+                                        <td className="px-6 py-4 text-[13px] text-slate-500 font-black">
+                                            <div className="flex items-center gap-2">
+                                                <Users className="h-4 w-4 text-slate-300" />
+                                                {request.guests}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            <div className="flex justify-end gap-2">
+                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 bg-slate-50 hover:bg-white border border-slate-100 rounded-full opacity-0 group-hover:opacity-100 transition-all">
+                                                    <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-500" />
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
                 {/* Pagination / Load More Footer */}
                 {hasMore && (
                     <div className="border-t border-border p-3 bg-muted/10 flex justify-center">
@@ -290,10 +296,10 @@ export default function BookingsPage() {
                                     {selectedRequest.fullName.charAt(0).toUpperCase()}
                                 </div>
                                 <div>
-                                    <h2 className="text-2xl font-black tracking-tight text-slate-900">{selectedRequest.fullName}</h2>
-                                    <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-slate-500 mt-2">
+                                    <h2 className="text-lg md:text-2xl font-black tracking-tight text-slate-900">{selectedRequest.fullName}</h2>
+                                    <div className="flex flex-col md:flex-row items-center gap-3 text-xs font-bold uppercase tracking-widest text-slate-500 mt-2">
                                         <span className="px-2 py-0.5 bg-slate-200/50 rounded-full">Booked on {new Date(selectedRequest.createdAt).toLocaleDateString()}</span>
-                                        <span className="text-slate-300">•</span>
+                                        <span className="hidden md:block text-slate-300">•</span>
                                         <span className="opacity-70">REF: {selectedRequest.id.slice(-6)}</span>
                                     </div>
                                 </div>

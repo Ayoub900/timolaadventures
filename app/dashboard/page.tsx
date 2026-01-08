@@ -73,11 +73,14 @@ export default function DashboardPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-black tracking-tight text-slate-900">Dashboard</h1>
-                    <div className="flex items-center gap-2 mt-2">
+                    <div className="flex items-center gap-2">
+                        <h1 className="text-3xl font-black tracking-tight text-slate-900">Dashboard</h1>
                         <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100/50">
                             Overview
                         </span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+
                         <p className="text-[13px] text-slate-500 font-medium">Welcome back to Timola Adventures</p>
                     </div>
                 </div>
@@ -225,9 +228,9 @@ export default function DashboardPage() {
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border ${request.status === "new" ? "bg-red-50 text-red-600 border-red-100" :
-                                            request.status === "contacted" ? "bg-blue-50 text-blue-600 border-blue-100" :
-                                                request.status === "confirmed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
-                                                    "bg-slate-50 text-slate-600 border-slate-100"
+                                        request.status === "contacted" ? "bg-blue-50 text-blue-600 border-blue-100" :
+                                            request.status === "confirmed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
+                                                "bg-slate-50 text-slate-600 border-slate-100"
                                         }`}>
                                         {request.status}
                                     </span>
