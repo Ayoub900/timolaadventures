@@ -187,7 +187,7 @@ export default function MessagesPage() {
                                 <th className="px-6 py-4">Subject</th>
                                 <th className="px-6 py-4">Status</th>
                                 <th className="px-6 py-4">Received</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
+                                {/* <th className="px-6 py-4 text-right">Actions</th> */}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border text-foreground">
@@ -233,11 +233,11 @@ export default function MessagesPage() {
                                         <td className="px-6 py-5 text-muted-foreground font-light text-xs">
                                             {new Date(msg.createdAt).toLocaleDateString()}
                                         </td>
-                                        <td className="px-6 py-5 text-right">
+                                        {/* <td className="px-6 py-5 text-right">
                                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <ArrowRight className="h-4 w-4 text-muted-foreground" />
                                             </Button>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 ))
                             )}
@@ -320,7 +320,7 @@ export default function MessagesPage() {
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="border-t border-border p-6 bg-muted/5 flex flex-wrapitems-center justify-between gap-4">
+                        <div className="border-t border-border p-6 bg-muted/5 flex flex-wrap w-full items-center justify-between gap-4">
                             <div className="flex gap-2">
                                 <Button
                                     variant="outline"
@@ -331,7 +331,7 @@ export default function MessagesPage() {
                                     <Trash2 className="h-4 w-4 mr-2" /> Delete
                                 </Button>
                             </div>
-                            <div className="flex gap-3">
+                            <div className="flex flex-wrap gap-3">
                                 {selectedMessage.status !== 'replied' && (
                                     <Button
                                         variant="outline"

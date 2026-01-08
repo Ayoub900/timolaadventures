@@ -69,11 +69,11 @@ export default function ToursPage() {
     return (
         <div className="p-8 space-y-8 min-h-screen bg-slate-50/30">
             {/* Header */}
-            <div>
+            <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                    <div className="flex flex-col md:flex-row items-center gap-2">
+                    <div className="flex flex-col md:flex-row items-center">
                         <h1 className="text-3xl font-black tracking-tight text-slate-900">Tours</h1>
-                        <div className="flex items-center gap-2 mt-2">
+                        <div className="flex items-center gap-2">
                             <span className="flex-shrink-0 px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100/50">
                                 {totalTours} Total
                             </span>
