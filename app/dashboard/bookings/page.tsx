@@ -18,6 +18,18 @@ interface TripRequest {
     createdAt: string
 }
 
+interface PricingTier {
+    groupSize: string
+    winterPrice: string
+    summerPrice: string
+}
+
+interface Tour {
+    id: string
+    name: string
+    pricingTiers: PricingTier[]
+}
+
 const statusStyles = {
     new: "bg-orange-50 text-orange-700 border-orange-200 ring-orange-100",
     contacted: "bg-blue-50 text-blue-700 border-blue-200 ring-blue-100",
@@ -28,8 +40,9 @@ const statusStyles = {
 }
 
 // Assume this is within a React component function, e.g., `export default function TripRequestsPage() { ... }`
-export default function TripRequestsPage() {
+export default function BookingsPage() {
     const [requests, setRequests] = useState<TripRequest[]>([])
+    const [tours, setTours] = useState<Tour[]>([])
     const [loading, setLoading] = useState(true)
     const [loadingMore, setLoadingMore] = useState(false)
     const [hasMore, setHasMore] = useState(true)
@@ -38,13 +51,25 @@ export default function TripRequestsPage() {
     const [updating, setUpdating] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
     const [statusFilter, setStatusFilter] = useState("all") // "all", "new", "contacted", etc.
-    const [pricePerPerson, setPricePerPerson] = useState(0)
 
     const itemsPerPage = 10 // Define itemsPerPage
 
     useEffect(() => {
         fetchRequests(1, true)
+        fetchTours()
     }, [statusFilter]) // Refetch when status filter changes
+
+    const fetchTours = async () => {
+        try {
+            const response = await fetch("/api/admin/tours?limit=100", { credentials: "include" })
+            if (response.ok) {
+                const data = await response.json()
+                setTours(data.tours || [])
+            }
+        } catch (error) {
+            console.error("Failed to fetch tours:", error)
+        }
+    }
 
     const fetchRequests = async (page: number, isInitial: boolean = false) => {
         if (isInitial) setLoading(true)
@@ -52,8 +77,8 @@ export default function TripRequestsPage() {
 
         try {
             const url = statusFilter === "all"
-                ? `/api/admin/trip-requests?page=${page}&limit=${itemsPerPage}`
-                : `/api/admin/trip-requests?status=${statusFilter}&page=${page}&limit=${itemsPerPage}`
+                ? `/api/admin/bookings?page=${page}&limit=${itemsPerPage}`
+                : `/api/admin/bookings?status=${statusFilter}&page=${page}&limit=${itemsPerPage}`
 
             const response = await fetch(url, { credentials: "include" })
 
@@ -85,7 +110,7 @@ export default function TripRequestsPage() {
     const updateStatus = async (id: string, newStatus: string) => {
         setUpdating(true)
         try {
-            const response = await fetch(`/api/admin/trip-requests/${id}`, {
+            const response = await fetch(`/api/admin/bookings/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -120,13 +145,19 @@ export default function TripRequestsPage() {
     }
 
     return (
-        <div className="p-8 space-y-6">
+        <div className="p-8 space-y-8 min-h-screen bg-slate-50/30">
             {/* Header */}
-            <div>
-                <h1 className="text-2xl font-semibold text-foreground">Bookings</h1>
-                <p className="text-sm text-muted-foreground mt-1 text-primary">{requests.length} total bookings</p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-black tracking-tight text-slate-900">Bookings</h1>
+                    <div className="flex items-center gap-2 mt-2">
+                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100/50">
+                            {requests.length} Total
+                        </span>
+                        <p className="text-[13px] text-slate-500 font-medium">Manage customer inquiry and tour bookings</p>
+                    </div>
+                </div>
             </div>
-
             {/* Filters and Search */}
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <div className="relative w-full sm:max-w-xs">
@@ -156,76 +187,80 @@ export default function TripRequestsPage() {
             </div>
 
             {/* Requests Table */}
-            <div className="rounded-lg border border-border bg-card overflow-hidden shadow-sm">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left">
-                        <thead className="bg-muted/50 text-muted-foreground font-medium border-b border-border">
+            <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+                <table className="w-full text-left">
+                    <thead>
+                        <tr className="bg-slate-50/50 border-b border-slate-100">
+                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Customer</th>
+                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Status</th>
+                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Circuit</th>
+                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Travel Dates</th>
+                            <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-500">Guests</th>
+                            <th className="px-6 py-4 text-right"></th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                        {filteredRequests.length === 0 ? (
                             <tr>
-                                <th className="px-6 py-4">Customer</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4">Tour</th>
-                                <th className="px-6 py-4">Travel Date</th>
-                                <th className="px-6 py-4">Guests</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
+                                <td colSpan={6} className="px-6 py-12 text-center">
+                                    <div className="flex flex-col items-center gap-3">
+                                        <Calendar className="h-10 w-10 text-slate-200" />
+                                        <span className="text-slate-400 font-medium">No bookings found.</span>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border text-foreground">
-                            {filteredRequests.length === 0 ? (
-                                <tr>
-                                    <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
-                                        <div className="flex flex-col items-center gap-3">
-                                            <Calendar className="h-10 w-10 opacity-20" />
-                                            <span>No bookings found.</span>
+                        ) : (
+                            filteredRequests.map((request) => (
+                                <tr
+                                    key={request.id}
+                                    className="hover:bg-blue-50/30 transition-colors cursor-pointer group"
+                                    onClick={() => setSelectedRequest(request)}
+                                >
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-10 w-10 rounded-full bg-white border border-slate-100 flex items-center justify-center text-slate-900 font-bold text-sm shadow-sm group-hover:border-blue-200 group-hover:text-blue-600 transition-all">
+                                                {request.fullName.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{request.fullName}</span>
+                                                <span className="text-[11px] text-slate-500 font-medium">{request.email}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border inline-flex items-center gap-1.5 ${request.status === "new" ? "bg-red-50 text-red-600 border-red-100" :
+                                            request.status === "contacted" ? "bg-blue-50 text-blue-600 border-blue-100" :
+                                                request.status === "confirmed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
+                                                    "bg-slate-50 text-slate-600 border-slate-100"
+                                            }`}>
+                                            <span className="w-1 h-1 rounded-full bg-current" />
+                                            {request.status.replace("-", " ")}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 text-sm font-bold text-slate-700">
+                                        {request.circuitName || <span className="text-slate-400 font-medium italic">General Inquiry</span>}
+                                    </td>
+                                    <td className="px-6 py-4 text-[13px] text-slate-500 font-medium">
+                                        {request.travelDates}
+                                    </td>
+                                    <td className="px-6 py-4 text-[13px] text-slate-500 font-black">
+                                        <div className="flex items-center gap-2">
+                                            <Users className="h-4 w-4 text-slate-300" />
+                                            {request.guests}
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 text-right">
+                                        <div className="flex justify-end gap-2">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 bg-slate-50 hover:bg-white border border-slate-100 rounded-full opacity-0 group-hover:opacity-100 transition-all">
+                                                <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-500" />
+                                            </Button>
                                         </div>
                                     </td>
                                 </tr>
-                            ) : (
-                                filteredRequests.map((request) => (
-                                    <tr
-                                        key={request.id}
-                                        className="hover:bg-muted/30 transition-colors cursor-pointer group"
-                                        onClick={() => setSelectedRequest(request)}
-                                    >
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm border border-primary/20">
-                                                    {request.fullName.charAt(0).toUpperCase()}
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="font-medium group-hover:text-primary transition-colors">{request.fullName}</span>
-                                                    <span className="text-xs text-muted-foreground">{request.email}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full border capitalize inline-flex items-center gap-1.5 ${statusStyles[request.status as keyof typeof statusStyles] || statusStyles.new}`}>
-                                                <span className="w-1.5 h-1.5 rounded-full bg-current opacity-60" />
-                                                {request.status.replace("-", " ")}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 font-medium">
-                                            {request.circuitName || <span className="text-muted-foreground italic">General Inquiry</span>}
-                                        </td>
-                                        <td className="px-6 py-4 text-muted-foreground">
-                                            {request.travelDates}
-                                        </td>
-                                        <td className="px-6 py-4 text-muted-foreground">
-                                            <div className="flex items-center gap-1.5">
-                                                <Users className="h-4 w-4 opacity-50" />
-                                                {request.guests}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                            ))
+                        )}
+                    </tbody>
+                </table>
 
                 {/* Pagination / Load More Footer */}
                 {hasMore && (
@@ -245,27 +280,27 @@ export default function TripRequestsPage() {
 
             {/* Detail Modal */}
             {selectedRequest && (
-                <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-card rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-border flex flex-col animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-slate-100 flex flex-col animate-in fade-in zoom-in-95 duration-300">
 
                         {/* Modal Header */}
-                        <div className="border-b border-border p-6 flex items-start justify-between bg-muted/10">
-                            <div className="flex items-center gap-4">
-                                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl border border-primary/20 shadow-sm">
+                        <div className="border-b border-slate-100 p-8 flex items-start justify-between bg-slate-50/50">
+                            <div className="flex items-center gap-6">
+                                <div className="h-16 w-16 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-900 font-black text-2xl shadow-sm">
                                     {selectedRequest.fullName.charAt(0).toUpperCase()}
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-bold text-foreground">{selectedRequest.fullName}</h2>
-                                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-0.5">
-                                        <span>Booked on {new Date(selectedRequest.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' })}</span>
-                                        <span>•</span>
-                                        <span className="font-mono text-xs opacity-70">ID: {selectedRequest.id.slice(-6)}</span>
+                                    <h2 className="text-2xl font-black tracking-tight text-slate-900">{selectedRequest.fullName}</h2>
+                                    <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-slate-500 mt-2">
+                                        <span className="px-2 py-0.5 bg-slate-200/50 rounded-full">Booked on {new Date(selectedRequest.createdAt).toLocaleDateString()}</span>
+                                        <span className="text-slate-300">•</span>
+                                        <span className="opacity-70">REF: {selectedRequest.id.slice(-6)}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <Button size="icon" variant="ghost" onClick={() => setSelectedRequest(null)} className="rounded-full h-8 w-8 hover:bg-muted">
-                                    <X className="h-4 w-4" />
+                            <div className="flex items-center gap-3">
+                                <Button size="icon" variant="ghost" onClick={() => setSelectedRequest(null)} className="rounded-full h-10 w-10 bg-white border border-slate-100 hover:bg-slate-50 shadow-sm">
+                                    <X className="h-5 w-5 text-slate-500" />
                                 </Button>
                             </div>
                         </div>
@@ -347,12 +382,6 @@ export default function TripRequestsPage() {
                                                 <span className="font-semibold text-foreground">{selectedRequest.guests} Person{selectedRequest.guests !== 1 ? 's' : ''}</span>
                                             </div>
                                         </div>
-                                        <div className="space-y-1.5">
-                                            <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Total Price Estimate</label>
-                                            <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg border border-border/50">
-                                                <span className="text-muted-foreground text-sm italic">Not calculated automatically</span>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     {selectedRequest.message && (
@@ -364,37 +393,32 @@ export default function TripRequestsPage() {
                                         </div>
                                     )}
 
-                                    {/* Price Calculator */}
-                                    <div className="space-y-4 pt-4 border-t border-border">
-                                        <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Price Calculator</h3>
-                                        <div className="bg-muted/30 p-4 rounded-xl border border-border space-y-4">
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div className="space-y-1.5">
-                                                    <label className="text-xs font-medium text-muted-foreground">Price per Person</label>
-                                                    <div className="relative">
-                                                        <input
-                                                            type="number"
-                                                            placeholder="0"
-                                                            className="w-full pl-3 pr-8 py-2 text-sm bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20"
-                                                            onChange={(e) => {
-                                                                const val = parseFloat(e.target.value) || 0
-                                                                // Store in a local state if needed, or just use DOM for simple calc
-                                                                // Better to add state: see below
-                                                                setPricePerPerson(val)
-                                                            }}
-                                                        />
-                                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">€</span>
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-1.5">
-                                                    <label className="text-xs font-medium text-muted-foreground">Total ({selectedRequest.guests} guests)</label>
-                                                    <div className="w-full py-2 px-3 text-sm font-semibold bg-background border border-input rounded-md text-foreground">
-                                                        {(pricePerPerson * selectedRequest.guests).toLocaleString('en-US', { style: 'currency', currency: 'EUR' })}
-                                                    </div>
-                                                </div>
+                                    {/* Pricing Table (Restored) */}
+                                    {tours.find(c => c.name === selectedRequest.circuitName) && (
+                                        <div className="space-y-4 pt-6 border-t border-border">
+                                            <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Seasonal Pricing Table</h3>
+                                            <div className="overflow-hidden rounded-xl border border-border">
+                                                <table className="w-full text-sm text-left">
+                                                    <thead className="bg-muted/50 text-muted-foreground font-bold text-xs">
+                                                        <tr className="divide-x divide-border">
+                                                            <th className="p-3">Group</th>
+                                                            <th className="p-3 text-center">Winter (Nov-Apr)</th>
+                                                            <th className="p-3 text-center">Summer (May-Oct)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-border">
+                                                        {tours.find(c => c.name === selectedRequest.circuitName)?.pricingTiers.map((row, i) => (
+                                                            <tr key={i} className="divide-x divide-border hover:bg-muted/30 transition-colors">
+                                                                <td className="p-3 font-medium text-foreground">{row.groupSize}</td>
+                                                                <td className="p-3 text-center text-muted-foreground">{row.winterPrice}</td>
+                                                                <td className="p-3 text-center text-muted-foreground">{row.summerPrice}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

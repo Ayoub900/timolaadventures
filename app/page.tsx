@@ -28,7 +28,7 @@ const TESTIMONIALS = [
     name: "Sophie Laurent",
     location: "France",
     date: "Nov 2025",
-    text: "Our 7-day journey with Timola Adventures exceeded all expectations. Hassan's knowledge of the desert was incredible—he knew exactly where to find the best viewpoints and the most peaceful spots for our sunset camp. The organization was flawless, from the comfortable riads to the delicious traditional meals. An unforgettable experience!",
+    text: "Our 7-day journey with Timola Adventures exceeded all expectations. Timola adventures's knowledge of the desert was incredible—he knew exactly where to find the best viewpoints and the most peaceful spots for our sunset camp. The organization was flawless, from the comfortable riads to the delicious traditional meals. An unforgettable experience!",
     stars: 5
   },
   {
@@ -128,7 +128,7 @@ export default function HomePage() {
 
   const fetchFeaturedCircuits = async () => {
     try {
-      const response = await fetch("/api/circuits?featured=true")
+      const response = await fetch("/api/tours?featured=true")
       if (response.ok) {
         const data = await response.json()
         setCircuits(data.slice(0, 3))
@@ -208,7 +208,7 @@ export default function HomePage() {
 
               <div className="flex flex-col sm:flex-row gap-5 pt-4">
                 <Button asChild size="lg" className="bg-white hover:bg-white/90 text-black px-10 h-14 text-lg rounded-full font-bold transition-all shadow-[0_10px_40px_-10px_rgba(255,255,255,0.5)] border-0 hover:scale-105">
-                  <Link href="/circuits">Start Your Journey</Link>
+                  <Link href="/tours">Start Your Journey</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="bg-black/30 backdrop-blur-sm hover:bg-black/40 text-white border-white/20 px-10 h-14 text-lg rounded-full font-medium transition-all hover:scale-105">
                   <Link href="/#contact">Custom Plan</Link>
@@ -257,7 +257,7 @@ export default function HomePage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {circuits.map((circuit) => (
-                  <Link key={circuit.id} href={`/circuits/${circuit.slug}`} className="group block h-full">
+                  <Link key={circuit.id} href={`/tours/${circuit.slug}`} className="group block h-full">
                     <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-border/40 group-hover:border-primary/20">
                       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                         {circuit.images[0] ? (
@@ -305,7 +305,7 @@ export default function HomePage() {
 
             <div className="mt-12 text-center">
               <Button asChild className="rounded-full px-6 font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
-                <Link href="/circuits">
+                <Link href="/tours">
                   View All Tours
                 </Link>
               </Button>
@@ -329,10 +329,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
-              {/* Connector line for desktop */}
-              {/* <div className="hidden md:block absolute top-[28%] left-[10%] w-[80%] h-px bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 -z-0" /> */}
-
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 relative">
               {[
                 {
                   step: "01",
@@ -359,10 +356,11 @@ export default function HomePage() {
                   icon: Map
                 }
               ].map((item, idx) => (
-                <div key={idx} className="relative z-10 flex flex-col items-center text-center group">
-                  <div className="relative w-20 h-20 bg-white border-2 border-gray-100 rounded-2xl flex items-center justify-center mb-8 shadow-[0_10px_30px_rgba(0,0,0,0.05)] group-hover:border-primary/30 group-hover:shadow-[0_10px_30px_rgba(var(--primary-rgb),0.2)] transition-all duration-300 transform group-hover:-translate-y-2">
-                    <item.icon className="w-8 h-8 text-gray-400 group-hover:text-primary transition-colors" />
-                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center text-xs font-bold shadow-md">
+                <div key={idx} className="relative flex flex-col items-center text-center group">
+                  <div className="relative w-24 h-24 bg-white rounded-3xl flex items-center justify-center mb-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:border-primary/20 group-hover:shadow-[0_20px_40px_rgba(var(--primary-rgb),0.08)] transition-all duration-500 transform group-hover:-translate-y-2">
+                    <div className="absolute inset-2 rounded-[22px] bg-primary/5" />
+                    <item.icon className="w-10 h-10 text-primary" />
+                    <div className="absolute -top-3 -right-3 w-9 h-9 bg-primary text-white rounded-2xl flex items-center justify-center text-xs font-black shadow-lg shadow-primary/20">
                       {item.step}
                     </div>
                   </div>
@@ -376,7 +374,7 @@ export default function HomePage() {
 
             <div className="text-center mt-20">
               <Button asChild size="lg" className="rounded-full px-6 font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
-                <Link href="/circuits">Start Exploring Now</Link>
+                <Link href="/tours">Start Exploring Now</Link>
               </Button>
             </div>
           </div>

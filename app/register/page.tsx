@@ -42,7 +42,7 @@ export default function RegisterPage() {
                 role: "user",
             } as any, {
                 onSuccess: () => {
-                    router.push("/profile")
+                    router.push("/dashboard")
                 },
                 onError: (ctx) => {
                     setError(ctx.error.message || "Registration failed")

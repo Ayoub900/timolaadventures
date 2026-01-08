@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: "/",
             disallow: ["/admin/", "/dashboard/", "/api/"],
         },
-        sitemap: "https://moroccohive.com/sitemap.xml",
+        sitemap: "https://timolaadventures.com/sitemap.xml",
     }
 }

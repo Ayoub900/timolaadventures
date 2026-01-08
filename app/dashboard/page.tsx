@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Map, Calendar, Plus, ArrowRight, TrendingUp, Check } from "lucide-react"
+import { Map, Calendar, Plus, ArrowRight, TrendingUp, Check, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-interface Circuit {
+interface Tour {
     id: string
     name: string
     category: string
@@ -19,8 +19,9 @@ interface TripRequest {
 }
 
 export default function DashboardPage() {
-    const [circuits, setCircuits] = useState<Circuit[]>([])
+    const [tours, setTours] = useState<Tour[]>([])
     const [tripRequests, setTripRequests] = useState<TripRequest[]>([])
+    const [messages, setMessages] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -29,19 +30,25 @@ export default function DashboardPage() {
 
     const fetchAllData = async () => {
         try {
-            const [circuitsRes, requestsRes] = await Promise.all([
-                fetch("/api/admin/circuits", { credentials: "include" }),
-                fetch("/api/admin/trip-requests", { credentials: "include" }),
+            const [toursRes, requestsRes, messagesRes] = await Promise.all([
+                fetch("/api/admin/tours", { credentials: "include" }),
+                fetch("/api/admin/bookings", { credentials: "include" }),
+                fetch("/api/admin/messages", { credentials: "include" }),
             ])
 
-            if (circuitsRes.ok) {
-                const data = await circuitsRes.json()
-                setCircuits(data.circuits || [])
+            if (toursRes.ok) {
+                const data = await toursRes.json()
+                setTours(data.tours || [])
             }
 
             if (requestsRes.ok) {
                 const data = await requestsRes.json()
                 setTripRequests(data.tripRequests || [])
+            }
+
+            if (messagesRes.ok) {
+                const data = await messagesRes.json()
+                setMessages(data.messages || [])
             }
         } catch (error) {
             console.error("Failed to fetch data:", error)
@@ -64,27 +71,34 @@ export default function DashboardPage() {
     return (
         <div className="p-8 space-y-8">
             {/* Header */}
-            <div>
-                <h1 className="text-2xl font-semibold text-foreground">Dashboard</h1>
-                <p className="text-sm text-muted-foreground mt-1">Welcome back! Here's your overview</p>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-black tracking-tight text-slate-900">Dashboard</h1>
+                    <div className="flex items-center gap-2 mt-2">
+                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100/50">
+                            Overview
+                        </span>
+                        <p className="text-[13px] text-slate-500 font-medium">Welcome back to Timola Adventures</p>
+                    </div>
+                </div>
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 group">
                     <div className="flex items-center justify-between mb-6">
                         <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Map className="h-7 w-7 text-blue-600" />
                         </div>
-                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 bg-slate-50 px-3 py-1 rounded-full">Tours</span>
                     </div>
                     <div>
-                        <p className="text-3xl font-bold text-slate-900 mb-1">{circuits.length}</p>
-                        <p className="text-sm font-medium text-slate-500">Total Circuits</p>
+                        <p className="text-3xl font-bold text-slate-900 mb-1">{tours.length}</p>
+                        <p className="text-sm font-medium text-slate-500">Total Tours</p>
                     </div>
                     <div className="mt-6 pt-6 border-t border-slate-50">
-                        <Link href="/dashboard/circuits" className="text-blue-600 font-semibold hover:text-blue-700 inline-flex items-center text-sm">
-                            View all circuits <ArrowRight className="ml-1 h-3 w-3" />
+                        <Link href="/dashboard/tours" className="text-blue-600 font-semibold hover:text-blue-700 inline-flex items-center text-sm">
+                            View all tours <ArrowRight className="ml-1 h-3 w-3" />
                         </Link>
                     </div>
                 </div>
@@ -98,11 +112,11 @@ export default function DashboardPage() {
                     </div>
                     <div>
                         <p className="text-3xl font-bold text-slate-900 mb-1">{totalRequests}</p>
-                        <p className="text-sm font-medium text-slate-500">Total Requests</p>
+                        <p className="text-sm font-medium text-slate-500">Total Bookings</p>
                     </div>
                     <div className="mt-6 pt-6 border-t border-slate-50">
-                        <Link href="/dashboard/trip-requests" className="text-amber-600 font-semibold hover:text-amber-700 inline-flex items-center text-sm">
-                            View all requests <ArrowRight className="ml-1 h-3 w-3" />
+                        <Link href="/dashboard/bookings" className="text-amber-600 font-semibold hover:text-amber-700 inline-flex items-center text-sm">
+                            View all bookings <ArrowRight className="ml-1 h-3 w-3" />
                         </Link>
                     </div>
                 </div>
@@ -128,6 +142,24 @@ export default function DashboardPage() {
                         </p>
                     </div>
                 </div>
+
+                <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 group">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Mail className="h-7 w-7 text-indigo-600" />
+                        </div>
+                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 bg-slate-50 px-3 py-1 rounded-full">Messages</span>
+                    </div>
+                    <div>
+                        <p className="text-3xl font-bold text-slate-900 mb-1">{messages.length}</p>
+                        <p className="text-sm font-medium text-slate-500">Inquiries</p>
+                    </div>
+                    <div className="mt-6 pt-6 border-t border-slate-50">
+                        <Link href="/dashboard/messages" className="text-indigo-600 font-semibold hover:text-indigo-700 inline-flex items-center text-sm">
+                            View all messages <ArrowRight className="ml-1 h-3 w-3" />
+                        </Link>
+                    </div>
+                </div>
             </div>
 
             {/* Quick Actions */}
@@ -135,26 +167,26 @@ export default function DashboardPage() {
                 <h2 className="text-xl font-semibold text-foreground">Quick Actions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Link
-                        href="/dashboard/circuits/new"
+                        href="/dashboard/tours/new"
                         className="flex items-center p-6 border border-border rounded-xl bg-card hover:border-primary/50 hover:shadow-md transition-all group"
                     >
                         <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4 group-hover:bg-primary group-hover:text-white transition-colors">
                             <Plus className="h-6 w-6 text-primary group-hover:text-white" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Add New Circuit</h3>
+                            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Add New Tour</h3>
                             <p className="text-sm text-muted-foreground">Create a new tour package from scratch</p>
                         </div>
                     </Link>
                     <Link
-                        href="/dashboard/trip-requests"
+                        href="/dashboard/bookings"
                         className="flex items-center p-6 border border-border rounded-xl bg-card hover:border-secondary/50 hover:shadow-md transition-all group"
                     >
                         <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mr-4 group-hover:bg-secondary group-hover:text-white transition-colors">
                             <Calendar className="h-6 w-6 text-secondary group-hover:text-white" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-foreground mb-1 group-hover:text-secondary transition-colors">Manage Requests</h3>
+                            <h3 className="font-semibold text-foreground mb-1 group-hover:text-secondary transition-colors">Manage Bookings</h3>
                             <p className="text-sm text-muted-foreground">View and respond to customer inquiries</p>
                         </div>
                     </Link>
@@ -163,35 +195,44 @@ export default function DashboardPage() {
 
             {/* Recent Trip Requests */}
             {tripRequests.length > 0 && (
-                <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-foreground">Recent Trip Requests</h2>
-                        <Link href="/dashboard/trip-requests" className="text-sm text-primary hover:text-primary/80">
+                <div className="bg-white border border-slate-100 rounded-2xl p-8 shadow-sm">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 className="text-xl font-black tracking-tight text-slate-900">Recent Bookings</h2>
+                            <p className="text-xs text-slate-500 font-medium mt-1">Latest customer inquiries</p>
+                        </div>
+                        <Link href="/dashboard/bookings" className="px-4 py-2 bg-slate-50 text-slate-600 text-xs font-bold uppercase tracking-widest rounded-full border border-slate-100 hover:bg-slate-100 transition-colors">
                             View all
                         </Link>
                     </div>
-                    <div className="space-y-3">
+                    <div className="grid grid-cols-1 gap-4">
                         {tripRequests.slice(0, 5).map((request) => (
                             <Link
                                 key={request.id}
-                                href="/dashboard/trip-requests"
-                                className="flex items-center justify-between p-3 border border-border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-colors"
+                                href="/dashboard/bookings"
+                                className="group flex items-center justify-between p-4 bg-slate-50/30 border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-blue-50/30 transition-all duration-300"
                             >
-                                <div className="flex items-center gap-3">
-                                    <div className={`w-2 h-2 rounded-full ${request.status === "new" ? "bg-destructive" :
-                                        request.status === "contacted" ? "bg-secondary-foreground" :
-                                            request.status === "confirmed" ? "bg-green-500" : "bg-muted-foreground"
-                                        }`} />
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-white border border-slate-100 flex items-center justify-center text-slate-900 font-bold text-sm shadow-sm">
+                                        {request.fullName.charAt(0)}
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-medium text-foreground">{request.fullName}</p>
-                                        <p className="text-xs text-muted-foreground">
-                                            {new Date(request.createdAt).toLocaleDateString()}
+                                        <p className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{request.fullName}</p>
+                                        <p className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">
+                                            {new Date(request.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                         </p>
                                     </div>
                                 </div>
-                                <span className="text-xs px-2 py-1 bg-muted text-foreground rounded capitalize">
-                                    {request.status}
-                                </span>
+                                <div className="flex items-center gap-3">
+                                    <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border ${request.status === "new" ? "bg-red-50 text-red-600 border-red-100" :
+                                            request.status === "contacted" ? "bg-blue-50 text-blue-600 border-blue-100" :
+                                                request.status === "confirmed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
+                                                    "bg-slate-50 text-slate-600 border-slate-100"
+                                        }`}>
+                                        {request.status}
+                                    </span>
+                                    <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                                </div>
                             </Link>
                         ))}
                     </div>
@@ -199,7 +240,7 @@ export default function DashboardPage() {
             )}
 
             {/* Empty State */}
-            {circuits.length === 0 && (
+            {tours.length === 0 && (
                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-8">
                     <div className="flex items-start gap-4">
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -208,12 +249,12 @@ export default function DashboardPage() {
                         <div className="flex-1">
                             <h3 className="text-lg font-semibold text-foreground mb-2">Welcome to Your Dashboard!</h3>
                             <p className="text-muted-foreground mb-4">
-                                Start by adding your first circuit to showcase your Morocco tours.
+                                Start by adding your first tour to showcase your Morocco tours.
                             </p>
                             <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                                <Link href="/dashboard/circuits/new">
+                                <Link href="/dashboard/tours/new">
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Create Your First Circuit
+                                    Create Your First Tour
                                 </Link>
                             </Button>
                         </div>

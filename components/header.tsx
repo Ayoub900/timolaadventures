@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Menu, X, MapPin, Phone, Mail } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -11,7 +12,7 @@ export function Header() {
 
     const navigation = [
         { name: "Home", href: "/" },
-        { name: "Our Tours", href: "/circuits" },
+        { name: "Our Tours", href: "/tours" },
         { name: "About Us", href: "/#about" },
         { name: "Contact", href: "/#contact" },
     ]
@@ -23,15 +24,15 @@ export function Header() {
 
                     {/* Logo (Left) */}
                     <div className="flex-shrink-0 flex items-center">
-                        <Link href="/" className="flex items-center space-x-2 group">
-                            <div className="flex flex-col">
-                                <span className="text-2xl font-black tracking-tighter text-foreground group-hover:text-primary transition-colors">
-                                    TIMOLA
-                                </span>
-                                <span className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-muted-foreground -mt-1 group-hover:text-primary/70 transition-colors">
-                                    Adventures
-                                </span>
-                            </div>
+                        <Link href="/" className="flex items-center group">
+                            <Image
+                                src="/wide-logo-transparent.PNG"
+                                alt="Timola Adventures"
+                                width={180}
+                                height={60}
+                                className="h-12 w-auto object-contain"
+                                priority
+                            />
                         </Link>
                     </div>
 

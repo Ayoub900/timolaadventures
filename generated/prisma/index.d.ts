@@ -1808,8 +1808,6 @@ export namespace Prisma {
     active: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
-    difficulty: string | null
-    bestTime: string | null
   }
 
   export type CircuitMaxAggregateOutputType = {
@@ -1830,8 +1828,6 @@ export namespace Prisma {
     active: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
-    difficulty: string | null
-    bestTime: string | null
   }
 
   export type CircuitCountAggregateOutputType = {
@@ -1895,8 +1891,6 @@ export namespace Prisma {
     active?: true
     createdAt?: true
     updatedAt?: true
-    difficulty?: true
-    bestTime?: true
   }
 
   export type CircuitMaxAggregateInputType = {
@@ -1917,8 +1911,6 @@ export namespace Prisma {
     active?: true
     createdAt?: true
     updatedAt?: true
-    difficulty?: true
-    bestTime?: true
   }
 
   export type CircuitCountAggregateInputType = {
@@ -2062,8 +2054,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     whatToBring: string[]
-    difficulty: string | null
-    bestTime: string | null
+    difficulty: string[]
+    bestTime: string[]
     _count: CircuitCountAggregateOutputType | null
     _avg: CircuitAvgAggregateOutputType | null
     _sum: CircuitSumAggregateOutputType | null
@@ -2185,8 +2177,8 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       whatToBring: string[]
-      difficulty: string | null
-      bestTime: string | null
+      difficulty: string[]
+      bestTime: string[]
     }, ExtArgs["result"]["circuit"]>
     composites: {
       pricingTiers: Prisma.$PricingTierPayload[]
@@ -2607,8 +2599,8 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Circuit", 'DateTime'>
     readonly updatedAt: FieldRef<"Circuit", 'DateTime'>
     readonly whatToBring: FieldRef<"Circuit", 'String[]'>
-    readonly difficulty: FieldRef<"Circuit", 'String'>
-    readonly bestTime: FieldRef<"Circuit", 'String'>
+    readonly difficulty: FieldRef<"Circuit", 'String[]'>
+    readonly bestTime: FieldRef<"Circuit", 'String[]'>
   }
     
 
@@ -11406,8 +11398,8 @@ export namespace Prisma {
     pricingTiers?: PricingTierCompositeListFilter | PricingTierObjectEqualityInput[]
     itinerary?: ItineraryDayCompositeListFilter | ItineraryDayObjectEqualityInput[]
     whatToBring?: StringNullableListFilter<"Circuit">
-    difficulty?: StringNullableFilter<"Circuit"> | string | null
-    bestTime?: StringNullableFilter<"Circuit"> | string | null
+    difficulty?: StringNullableListFilter<"Circuit">
+    bestTime?: StringNullableListFilter<"Circuit">
     favorites?: FavoriteListRelationFilter
   }
 
@@ -11473,8 +11465,8 @@ export namespace Prisma {
     pricingTiers?: PricingTierCompositeListFilter | PricingTierObjectEqualityInput[]
     itinerary?: ItineraryDayCompositeListFilter | ItineraryDayObjectEqualityInput[]
     whatToBring?: StringNullableListFilter<"Circuit">
-    difficulty?: StringNullableFilter<"Circuit"> | string | null
-    bestTime?: StringNullableFilter<"Circuit"> | string | null
+    difficulty?: StringNullableListFilter<"Circuit">
+    bestTime?: StringNullableListFilter<"Circuit">
     favorites?: FavoriteListRelationFilter
   }, "id" | "slug">
 
@@ -11540,8 +11532,8 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Circuit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Circuit"> | Date | string
     whatToBring?: StringNullableListFilter<"Circuit">
-    difficulty?: StringNullableWithAggregatesFilter<"Circuit"> | string | null
-    bestTime?: StringNullableWithAggregatesFilter<"Circuit"> | string | null
+    difficulty?: StringNullableListFilter<"Circuit">
+    bestTime?: StringNullableListFilter<"Circuit">
   }
 
   export type BlogPostWhereInput = {
@@ -12171,8 +12163,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListCreateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListCreateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitCreatewhatToBringInput | string[]
-    difficulty?: string | null
-    bestTime?: string | null
+    difficulty?: CircuitCreatedifficultyInput | string[]
+    bestTime?: CircuitCreatebestTimeInput | string[]
     favorites?: FavoriteCreateNestedManyWithoutCircuitInput
   }
 
@@ -12203,8 +12195,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListCreateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListCreateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitCreatewhatToBringInput | string[]
-    difficulty?: string | null
-    bestTime?: string | null
+    difficulty?: CircuitCreatedifficultyInput | string[]
+    bestTime?: CircuitCreatebestTimeInput | string[]
     favorites?: FavoriteUncheckedCreateNestedManyWithoutCircuitInput
   }
 
@@ -12234,8 +12226,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListUpdateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListUpdateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitUpdatewhatToBringInput | string[]
-    difficulty?: NullableStringFieldUpdateOperationsInput | string | null
-    bestTime?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: CircuitUpdatedifficultyInput | string[]
+    bestTime?: CircuitUpdatebestTimeInput | string[]
     favorites?: FavoriteUpdateManyWithoutCircuitNestedInput
   }
 
@@ -12265,8 +12257,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListUpdateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListUpdateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitUpdatewhatToBringInput | string[]
-    difficulty?: NullableStringFieldUpdateOperationsInput | string | null
-    bestTime?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: CircuitUpdatedifficultyInput | string[]
+    bestTime?: CircuitUpdatebestTimeInput | string[]
     favorites?: FavoriteUncheckedUpdateManyWithoutCircuitNestedInput
   }
 
@@ -12297,8 +12289,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListCreateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListCreateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitCreatewhatToBringInput | string[]
-    difficulty?: string | null
-    bestTime?: string | null
+    difficulty?: CircuitCreatedifficultyInput | string[]
+    bestTime?: CircuitCreatebestTimeInput | string[]
   }
 
   export type CircuitUpdateManyMutationInput = {
@@ -12327,8 +12319,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListUpdateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListUpdateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitUpdatewhatToBringInput | string[]
-    difficulty?: NullableStringFieldUpdateOperationsInput | string | null
-    bestTime?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: CircuitUpdatedifficultyInput | string[]
+    bestTime?: CircuitUpdatebestTimeInput | string[]
   }
 
   export type CircuitUncheckedUpdateManyInput = {
@@ -12357,8 +12349,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListUpdateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListUpdateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitUpdatewhatToBringInput | string[]
-    difficulty?: NullableStringFieldUpdateOperationsInput | string | null
-    bestTime?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: CircuitUpdatedifficultyInput | string[]
+    bestTime?: CircuitUpdatebestTimeInput | string[]
   }
 
   export type BlogPostCreateInput = {
@@ -13200,8 +13192,6 @@ export namespace Prisma {
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    difficulty?: SortOrder
-    bestTime?: SortOrder
   }
 
   export type CircuitMinOrderByAggregateInput = {
@@ -13222,8 +13212,6 @@ export namespace Prisma {
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    difficulty?: SortOrder
-    bestTime?: SortOrder
   }
 
   export type CircuitSumOrderByAggregateInput = {
@@ -13745,6 +13733,14 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type CircuitCreatedifficultyInput = {
+    set: string[]
+  }
+
+  export type CircuitCreatebestTimeInput = {
+    set: string[]
+  }
+
   export type FavoriteCreateNestedManyWithoutCircuitInput = {
     create?: XOR<FavoriteCreateWithoutCircuitInput, FavoriteUncheckedCreateWithoutCircuitInput> | FavoriteCreateWithoutCircuitInput[] | FavoriteUncheckedCreateWithoutCircuitInput[]
     connectOrCreate?: FavoriteCreateOrConnectWithoutCircuitInput | FavoriteCreateOrConnectWithoutCircuitInput[]
@@ -13846,6 +13842,16 @@ export namespace Prisma {
   }
 
   export type CircuitUpdatewhatToBringInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type CircuitUpdatedifficultyInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type CircuitUpdatebestTimeInput = {
     set?: string[]
     push?: string | string[]
   }
@@ -14612,8 +14618,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListCreateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListCreateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitCreatewhatToBringInput | string[]
-    difficulty?: string | null
-    bestTime?: string | null
+    difficulty?: CircuitCreatedifficultyInput | string[]
+    bestTime?: CircuitCreatebestTimeInput | string[]
   }
 
   export type CircuitUncheckedCreateWithoutFavoritesInput = {
@@ -14643,8 +14649,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListCreateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListCreateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitCreatewhatToBringInput | string[]
-    difficulty?: string | null
-    bestTime?: string | null
+    difficulty?: CircuitCreatedifficultyInput | string[]
+    bestTime?: CircuitCreatebestTimeInput | string[]
   }
 
   export type CircuitCreateOrConnectWithoutFavoritesInput = {
@@ -14726,8 +14732,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListUpdateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListUpdateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitUpdatewhatToBringInput | string[]
-    difficulty?: NullableStringFieldUpdateOperationsInput | string | null
-    bestTime?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: CircuitUpdatedifficultyInput | string[]
+    bestTime?: CircuitUpdatebestTimeInput | string[]
   }
 
   export type CircuitUncheckedUpdateWithoutFavoritesInput = {
@@ -14756,8 +14762,8 @@ export namespace Prisma {
     pricingTiers?: XOR<PricingTierListUpdateEnvelopeInput, PricingTierCreateInput> | PricingTierCreateInput[]
     itinerary?: XOR<ItineraryDayListUpdateEnvelopeInput, ItineraryDayCreateInput> | ItineraryDayCreateInput[]
     whatToBring?: CircuitUpdatewhatToBringInput | string[]
-    difficulty?: NullableStringFieldUpdateOperationsInput | string | null
-    bestTime?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: CircuitUpdatedifficultyInput | string[]
+    bestTime?: CircuitUpdatebestTimeInput | string[]
   }
 
   export type UserCreateWithoutSessionsInput = {

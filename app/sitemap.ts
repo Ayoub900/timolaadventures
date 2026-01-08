@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
 
     const circuitEntries = circuits.map((circuit) => ({
-        url: `${baseUrl}/circuits/${circuit.slug}`,
+        url: `${baseUrl}/tours/${circuit.slug}`,
         lastModified: circuit.updatedAt,
         changeFrequency: "weekly" as const,
         priority: 0.8,
@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 1,
         },
         {
-            url: `${baseUrl}/circuits`,
+            url: `${baseUrl}/tours`,
             lastModified: new Date(),
             changeFrequency: "daily" as const,
             priority: 0.9,

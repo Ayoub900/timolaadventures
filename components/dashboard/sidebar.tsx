@@ -27,7 +27,7 @@ export function SidebarContent() {
                 <Link href="/dashboard" className="flex items-center gap-2">
                     <Image
                         src="/logo_1.PNG"
-                        alt="MoroccoHive"
+                        alt="TimolaAdventures"
                         width={180}
                         height={60}
                         className="h-16 w-auto object-contain"

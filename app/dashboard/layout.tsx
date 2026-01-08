@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, FileText, Map, MessageSquare, ShoppingBag, Menu, X, LogOut } from "lucide-react"
+import { LayoutDashboard, FileText, Map, MessageSquare, ShoppingBag, Menu, X, LogOut, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { authClient } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
@@ -19,8 +19,11 @@ export default function DashboardLayout({
     const { data: session, isPending } = authClient.useSession()
 
     // Redirect if not admin
-    if (!isPending && (!session || (session.user as any).role !== "admin")) {
+    if (!isPending && (!session)) {
         router.push("/login")
+        return null
+    } else if (!isPending && (session?.user as any).role !== "admin") {
+        router.push("/access-denied")
         return null
     }
 
@@ -31,7 +34,8 @@ export default function DashboardLayout({
     const navigation = [
         { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
         { name: "Bookings", href: "/dashboard/bookings", icon: ShoppingBag },
-        { name: "Circuits", href: "/dashboard/circuits", icon: Map },
+        { name: "Tours", href: "/dashboard/tours", icon: Map },
+        { name: "Messages", href: "/dashboard/messages", icon: Mail },
     ]
 
     const handleLogout = async () => {

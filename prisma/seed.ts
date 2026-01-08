@@ -80,8 +80,16 @@ async function main() {
                 'Sunscreen & sunglasses',
                 'Sleeping bag'
             ],
-            difficulty: 'Moderate to challenging. No technical climbing required. Suitable for people in good physical condition. Altitude can be demanding--slow pace & hydration recommended.',
-            bestTime: 'April to October: Best trekking season. November to March: Snow conditions – crampons & ice axe required.'
+            difficulty: [
+                'Moderate to challenging',
+                'No technical climbing required',
+                'Suitable for people in good physical condition',
+                'Altitude can be demanding--slow pace & hydration recommended'
+            ],
+            bestTime: [
+                'April to October: Best trekking season',
+                'November to March: Snow conditions – crampons & ice axe required'
+            ]
         },
         create: {
             slug: 'toubkal-ascent',
@@ -157,8 +165,16 @@ async function main() {
                 'Sunscreen & sunglasses',
                 'Sleeping bag'
             ],
-            difficulty: 'Moderate to challenging. No technical climbing required. Suitable for people in good physical condition. Altitude can be demanding--slow pace & hydration recommended.',
-            bestTime: 'April to October: Best trekking season. November to March: Snow conditions – crampons & ice axe required.'
+            difficulty: [
+                'Moderate to challenging',
+                'No technical climbing required',
+                'Suitable for people in good physical condition',
+                'Altitude can be demanding--slow pace & hydration recommended'
+            ],
+            bestTime: [
+                'April to October: Best trekking season',
+                'November to March: Snow conditions – crampons & ice axe required'
+            ]
         }
     })
 

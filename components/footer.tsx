@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { MapPin, Phone, Mail, Instagram, MessageCircle } from "lucide-react"
 
 export function Footer() {
@@ -10,13 +11,14 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Brand */}
                     <div className="space-y-4">
-                        <Link href="/" className="inline-block">
-                            <div className="flex items-center">
-                                <span className="text-2xl font-bold tracking-tight">
-                                    <span className="text-primary">Timola</span>
-                                    <span className="text-secondary ml-1">Adventures</span>
-                                </span>
-                            </div>
+                        <Link href="/" className="inline-block w-full">
+                            <Image
+                                src="/full_logo_transparent.PNG"
+                                alt="Timola Adventures"
+                                width={150}
+                                height={150}
+                                className="h-32 mx-auto w-auto object-contain"
+                            />
                         </Link>
                         <p className="text-sm text-muted-foreground">
                             Embark on unforgettable journeys through Morocco with our expertly guided tours and authentic local experiences.
@@ -45,7 +47,7 @@ export function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/circuits" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                <Link href="/tours" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                                     Our Tours
                                 </Link>
                             </li>

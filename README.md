@@ -1,5 +1,5 @@
 
-# MoroccoHive – Hosting Guide
+# TimolaAdventures – Hosting Guide
 
 ## Requirements
 
@@ -45,8 +45,8 @@ npm -v
 ## 3. Clone the Project
 
 ```bash
-git clone https://github.com/moroccohive-cmd/moroccohive.git
-cd moroccohive
+git clone https://github.com/timolaadventures-cmd/timolaadventures.git
+cd timolaadventures
 ```
 
 ---
@@ -116,7 +116,7 @@ http://localhost:3000
 
 ```bash
 npm install -g pm2
-pm2 start npm --name "moroccohive" -- start
+pm2 start npm --name "timolaadventures" -- start
 pm2 save
 ```
 

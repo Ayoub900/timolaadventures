@@ -44,8 +44,8 @@ model Circuit {
   pricingTiers    PricingTier[]
   itinerary       ItineraryDay[]
   whatToBring     String[]
-  difficulty      String?        // Rich text description
-  bestTime        String?        // Rich text description
+  difficulty      String[]
+  bestTime        String[]
 }
 
 type PricingTier {
