@@ -9,6 +9,9 @@ interface TripRequest {
     circuitName: string
     travelDates: string
     guests: number
+    adults: number
+    children: number
+    infants: number
     message: string
     fullName: string
     email: string
@@ -382,10 +385,26 @@ export default function BookingsPage() {
                                             </div>
                                         </div>
                                         <div className="space-y-1.5">
-                                            <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Guests</label>
-                                            <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg border border-border/50">
-                                                <Users className="h-5 w-5 text-primary" />
-                                                <span className="font-semibold text-foreground">{selectedRequest.guests} Person{selectedRequest.guests !== 1 ? 's' : ''}</span>
+                                            <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Travelers</label>
+                                            <div className="space-y-2 p-3 bg-muted/30 rounded-lg border border-border/50">
+                                                <div className="flex items-center justify-between text-sm font-medium">
+                                                    <span className="flex items-center gap-2 text-slate-600"><Users className="h-4 w-4 text-primary" /> Total</span>
+                                                    <span className="font-bold text-foreground">{selectedRequest.guests}</span>
+                                                </div>
+                                                <div className="pt-2 mt-2 border-t border-slate-200/50 grid grid-cols-3 gap-2">
+                                                    <div className="flex flex-col items-center p-2 bg-white rounded-md border border-slate-100">
+                                                        <span className="text-[10px] uppercase font-bold text-slate-400">Adults</span>
+                                                        <span className="text-sm font-black text-slate-700">{selectedRequest.adults}</span>
+                                                    </div>
+                                                    <div className="flex flex-col items-center p-2 bg-white rounded-md border border-slate-100">
+                                                        <span className="text-[10px] uppercase font-bold text-slate-400">Children</span>
+                                                        <span className="text-sm font-black text-slate-700">{selectedRequest.children}</span>
+                                                    </div>
+                                                    <div className="flex flex-col items-center p-2 bg-white rounded-md border border-slate-100">
+                                                        <span className="text-[10px] uppercase font-bold text-slate-400">Infants</span>
+                                                        <span className="text-sm font-black text-slate-700">{selectedRequest.infants}</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

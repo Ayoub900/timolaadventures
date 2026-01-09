@@ -1,20 +1,46 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles } from "lucide-react"
+import { useState, useEffect } from "react"
+import Image from "next/image"
 
 export function Hero() {
+    const images = [
+        "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?q=80&w=2070", // Original
+        "https://images.unsplash.com/photo-1539020140153-e479b8c22e70?q=80&w=2070", // Sahara
+        "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=2070", // Mountains
+        "https://images.unsplash.com/photo-1553508913-444457f480c6?q=80&w=2070", // City/Medina
+    ]
+
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImageIndex((prev) => (prev + 1) % images.length)
+        }, 5000)
+        return () => clearInterval(interval)
+    }, [images.length])
+
     return (
         <section className="relative h-[600px] md:h-[700px] flex items-center justify-center overflow-hidden">
-            {/* Background Image with Overlay */}
-            <div
-                className="absolute inset-0 z-0"
-                style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?q=80&w=2070')",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
-            >
-                <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-background/50" />
+            {/* Slideshow Background */}
+            <div className="absolute inset-0 z-0">
+                {images.map((image, index) => (
+                    <div
+                        key={image}
+                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                            }`}
+                    >
+                        <Image
+                            src={image}
+                            alt={`Morocco adventure ${index + 1}`}
+                            fill
+                            className="object-cover"
+                            priority={index === 0}
+                        />
+                    </div>
+                ))}
+                <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-background/50 z-1" />
             </div>
 
             {/* Content */}

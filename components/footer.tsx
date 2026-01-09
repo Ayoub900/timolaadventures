@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin, Phone, Mail, Instagram, MessageCircle } from "lucide-react"
+import { MapPin, Phone, Mail, Instagram, MessageCircle, Map as MapIcon, Star } from "lucide-react"
 
 export function Footer() {
     const currentYear = new Date().getFullYear()
@@ -31,6 +31,14 @@ export function Footer() {
                             <Link href="https://wa.me/212623425783" target="_blank" className="text-muted-foreground hover:text-accent transition-colors">
                                 <span className="sr-only">Whatsapp</span>
                                 <MessageCircle className="h-5 w-5" />
+                            </Link>
+                            <Link href="https://www.tripadvisor.fr/UserReviewEdit-g488109-d32987585-Timola_Adventures-Imlil_Marrakech_Safi.html" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
+                                <span className="sr-only">TripAdvisor</span>
+                                <Star className="h-5 w-5" />
+                            </Link>
+                            <Link href="https://maps.app.goo.gl/DXMnq3ASZmdorYgcA" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
+                                <span className="sr-only">Google Maps</span>
+                                <MapIcon className="h-5 w-5" />
                             </Link>
                         </div>
                     </div>
@@ -70,11 +78,11 @@ export function Footer() {
                             Popular Destinations
                         </h3>
                         <ul className="space-y-2">
-                            <li className="text-sm text-muted-foreground">Marrakech</li>
-                            <li className="text-sm text-muted-foreground">Fes</li>
+                            <li className="text-sm text-muted-foreground">Toubkal</li>
+                            <li className="text-sm text-muted-foreground">Mgoun</li>
+                            <li className="text-sm text-muted-foreground">Saghrou</li>
+                            <li className="text-sm text-muted-foreground">Siroua</li>
                             <li className="text-sm text-muted-foreground">Sahara Desert</li>
-                            <li className="text-sm text-muted-foreground">Chefchaouen</li>
-                            <li className="text-sm text-muted-foreground">Essaouira</li>
                         </ul>
                     </div>
 

@@ -59,6 +59,9 @@ export default function TourDetailPage() {
         phone: "",
         countryCode: "+212",
         message: "",
+        adults: 1,
+        children: 0,
+        infants: 0,
     })
     const [submitting, setSubmitting] = useState(false)
     const [submitted, setSubmitted] = useState(false)
@@ -71,9 +74,17 @@ export default function TourDetailPage() {
 
     const [guests, setGuests] = useState(1)
 
-    const handleGuestsChange = (delta: number) => {
-        setGuests(prev => Math.max(1, prev + delta))
+    const handleTravelerChange = (type: 'adults' | 'children' | 'infants', delta: number) => {
+        setBooking(prev => {
+            const newVal = Math.max(type === 'adults' ? 1 : 0, prev[type] + delta)
+            return { ...prev, [type]: newVal }
+        })
     }
+
+    // Update total guests whenever traveler counts change
+    useEffect(() => {
+        setGuests(booking.adults + booking.children + booking.infants)
+    }, [booking.adults, booking.children, booking.infants])
 
     const fetchTour = async (slug: string) => {
         try {
@@ -103,6 +114,9 @@ export default function TourDetailPage() {
                     phone: `${booking.countryCode} ${booking.phone}`,
                     circuitName: tour?.name,
                     guests: guests,
+                    adults: booking.adults,
+                    children: booking.children,
+                    infants: booking.infants,
                     message: booking.message,
                 }),
             })
@@ -234,13 +248,13 @@ export default function TourDetailPage() {
 
                             {/* Overview */}
                             <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                                <h2 className="text-2xl font-semibold text-foreground mb-6">The Experience</h2>
+                                <h2 className="text-2xl font-semibold text-foreground mb-6">Overview</h2>
                                 <p className="text-muted-foreground leading-loose text-lg font-light">
                                     {tour.description}
                                 </p>
                             </div>
 
-                            {/* Highlights - Soft cards grid */}
+                            {/* Highlights */}
                             {tour.highlights.length > 0 && (
                                 <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                                     <h2 className="text-2xl font-semibold text-foreground mb-6">Highlights</h2>
@@ -256,18 +270,61 @@ export default function TourDetailPage() {
                                 </div>
                             )}
 
+                            {/* Itinerary - Minimal Timeline */}
+                            <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                                {tour.itineraryGlance.length > 0 && (
+                                    <>
+                                        <h2 className="text-2xl font-semibold text-foreground mb-8">Itinerary Overview</h2>
+                                        <div className="space-y-0 relative">
+                                            {/* Timeline line */}
+                                            {/* <div className="absolute left-[19px] top-4 bottom-4 w-[2px] bg-border" /> */}
+
+                                            {tour.itineraryGlance.map((day, index) => (
+                                                <div key={index} className="relative pl-12 pb-8 last:pb-0 group">
+                                                    {/* Dot */}
+                                                    <div className="absolute left-0 top-1.5 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center z-10 group-hover:border-accent/10 transition-colors">
+                                                        <div className="w-3 h-3 rounded-full bg-primary/40" />
+                                                    </div>
+
+                                                    <div className="flex flex-col">
+                                                        <span className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Day {index + 1}</span>
+                                                        <h3 className="text-lg font-medium text-foreground">{day}</h3>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+
+
+                                <div className="mt-10 pt-8 border-t border-border">
+                                    {tour.itineraryDetail && (
+                                        <>
+                                            <h3 className="text-lg font-semibold text-foreground mb-6 flex items-center gap-2">
+                                                <Info className="w-5 h-5 text-accent" />
+                                                Detailed Itinerary
+                                            </h3>
+                                            <div
+                                                className="prose prose-gray max-w-none text-muted-foreground leading-relaxed"
+                                                dangerouslySetInnerHTML={{ __html: renderRichText(tour.itineraryDetail) }}
+                                            />
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
                             {/* What to Bring */}
                             {tour.whatToBring && tour.whatToBring.length > 0 && (
                                 <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                                     <h2 className="text-2xl font-semibold text-foreground mb-6">What to Bring</h2>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <ul className="space-y-4">
                                         {tour.whatToBring.map((item, index) => (
-                                            <div key={index} className="flex items-center text-gray-500 text-sm bg-gray-50/50 p-3 rounded-xl border border-gray-100">
-                                                <div className="w-2 h-2 rounded-full bg-secondary/40 mr-3 flex-shrink-0" />
-                                                <span className="text-muted-foreground font-medium">{item}</span>
-                                            </div>
+                                            <li key={index} className="flex items-start text-gray-500 text-sm">
+                                                <Check className="w-4 h-4 mr-3 mt-0.5 text-secondary flex-shrink-0" />
+                                                <span className="text-muted-foreground">{item}</span>
+                                            </li>
                                         ))}
-                                    </div>
+                                    </ul>
                                 </div>
                             )}
 
@@ -348,49 +405,6 @@ export default function TourDetailPage() {
                                     </ul>
                                 </div>
                             )}
-
-                            {/* Itinerary - Minimal Timeline */}
-                            <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                                {tour.itineraryGlance.length > 0 && (
-                                    <>
-                                        <h2 className="text-2xl font-semibold text-foreground mb-8">Itinerary Overview</h2>
-                                        <div className="space-y-0 relative">
-                                            {/* Timeline line */}
-                                            {/* <div className="absolute left-[19px] top-4 bottom-4 w-[2px] bg-border" /> */}
-
-                                            {tour.itineraryGlance.map((day, index) => (
-                                                <div key={index} className="relative pl-12 pb-8 last:pb-0 group">
-                                                    {/* Dot */}
-                                                    <div className="absolute left-0 top-1.5 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center z-10 group-hover:border-accent/10 transition-colors">
-                                                        <div className="w-3 h-3 rounded-full bg-primary/40" />
-                                                    </div>
-
-                                                    <div className="flex flex-col">
-                                                        <span className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Day {index + 1}</span>
-                                                        <h3 className="text-lg font-medium text-foreground">{day}</h3>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </>
-                                )}
-
-
-                                <div className="mt-10 pt-8 border-t border-border">
-                                    {tour.itineraryDetail && (
-                                        <>
-                                            <h3 className="text-lg font-semibold text-foreground mb-6 flex items-center gap-2">
-                                                <Info className="w-5 h-5 text-accent" />
-                                                Detailed Itinerary
-                                            </h3>
-                                            <div
-                                                className="prose prose-gray max-w-none text-muted-foreground leading-relaxed"
-                                                dangerouslySetInnerHTML={{ __html: renderRichText(tour.itineraryDetail) }}
-                                            />
-                                        </>
-                                    )}
-                                </div>
-                            </div>
 
                             {/* Additional Info */}
                             {tour.additionalInfo && (
@@ -494,13 +508,45 @@ export default function TourDetailPage() {
                                                 />
                                             </div>
 
-                                            <div className="space-y-2">
-                                                <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wider mb-2 block">Number of Travelers</Label>
+                                            <div className="space-y-4">
+                                                <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wider block">Travelers</Label>
+
+                                                {/* Adults */}
                                                 <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
-                                                    <span className="text-sm font-semibold">{guests} Person{guests > 1 ? "s" : ""}</span>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-sm font-semibold">Adults</span>
+                                                        <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tight">Ages 13+</span>
+                                                    </div>
                                                     <div className="flex gap-2">
-                                                        <button type="button" onClick={() => handleGuestsChange(-1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center hover:border-primary transition-colors">-</button>
-                                                        <button type="button" onClick={() => handleGuestsChange(1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center hover:border-primary transition-colors">+</button>
+                                                        <button type="button" onClick={() => handleTravelerChange('adults', -1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center hover:border-primary transition-colors hover:bg-primary/5">-</button>
+                                                        <span className="w-4 text-center font-bold">{booking.adults}</span>
+                                                        <button type="button" onClick={() => handleTravelerChange('adults', 1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center hover:border-primary transition-colors hover:bg-primary/5">+</button>
+                                                    </div>
+                                                </div>
+
+                                                {/* Children */}
+                                                <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                                    <div className="flex flex-col">
+                                                        <span className="text-sm font-semibold">Children</span>
+                                                        <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tight">Ages 3-12</span>
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <button type="button" onClick={() => handleTravelerChange('children', -1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center hover:border-primary transition-colors hover:bg-primary/5">-</button>
+                                                        <span className="w-4 text-center font-bold">{booking.children}</span>
+                                                        <button type="button" onClick={() => handleTravelerChange('children', 1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center hover:border-primary transition-colors hover:bg-primary/5">+</button>
+                                                    </div>
+                                                </div>
+
+                                                {/* Infants */}
+                                                <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                                    <div className="flex flex-col">
+                                                        <span className="text-sm font-semibold">Infants</span>
+                                                        <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tight">Under 3</span>
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <button type="button" onClick={() => handleTravelerChange('infants', -1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center hover:border-primary transition-colors hover:bg-primary/5">-</button>
+                                                        <span className="w-4 text-center font-bold">{booking.infants}</span>
+                                                        <button type="button" onClick={() => handleTravelerChange('infants', 1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center hover:border-primary transition-colors hover:bg-primary/5">+</button>
                                                     </div>
                                                 </div>
                                             </div>

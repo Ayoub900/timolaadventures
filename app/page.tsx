@@ -110,6 +110,23 @@ export default function HomePage() {
   const [circuits, setCircuits] = useState<Circuit[]>([])
   const [loading, setLoading] = useState(true)
 
+  const heroImages = [
+    "/bg1.jpeg",
+    "/bg2.jpeg",
+    "/bg3.jpeg",
+    "/bg4.jpeg",
+    "/bg5.jpeg",
+    "/bg6.jpeg",
+  ]
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length)
+    }, 6000)
+    return () => clearInterval(interval)
+  }, [heroImages.length])
+
   // Contact Form State
   const [contactForm, setContactForm] = useState({
     name: "",
@@ -179,13 +196,21 @@ export default function HomePage() {
         <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
           {/* Background */}
           <div className="absolute inset-0 z-0">
-            <Image
-              src="/hero-hiking-bg.jpg"
-              alt="Morocco Atlas Mountains Hiking"
-              fill
-              className="object-cover"
-              priority
-            />
+            {heroImages.map((image, index) => (
+              <div
+                key={image}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentHeroIndex ? 'opacity-100' : 'opacity-0'
+                  }`}
+              >
+                <Image
+                  src={image}
+                  alt={`Morocco Atlas Mountains Hiking ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={index === 0}
+                />
+              </div>
+            ))}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
           </div>
@@ -528,6 +553,26 @@ export default function HomePage() {
             </div>
           </div>
         </section >
+
+        {/* Partners Section */}
+        <section className="py-16 bg-white border-t border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Trusted Partners</h3>
+            </div>
+            <div className="flex flex-wrap justify-center items-center gap-12">
+              <div className="relative h-20 w-48 transition-transform hover:scale-105">
+                <Image
+                  src="/partners/la-belle-roulotte.jpg"
+                  alt="La Belle Roulotte"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              {/* Add more partners here as they come */}
+            </div>
+          </div>
+        </section>
 
         {/* Contact Section - Redesigned */}
         <section id="contact" className="py-24 bg-white relative overflow-hidden">

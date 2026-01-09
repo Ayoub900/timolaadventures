@@ -143,25 +143,14 @@ exports.Prisma.CircuitScalarFieldEnum = {
   bestTime: 'bestTime'
 };
 
-exports.Prisma.BlogPostScalarFieldEnum = {
-  id: 'id',
-  slug: 'slug',
-  title: 'title',
-  content: 'content',
-  excerpt: 'excerpt',
-  coverImage: 'coverImage',
-  author: 'author',
-  tags: 'tags',
-  published: 'published',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.TripRequestScalarFieldEnum = {
   id: 'id',
   circuitName: 'circuitName',
   travelDates: 'travelDates',
   guests: 'guests',
+  adults: 'adults',
+  children: 'children',
+  infants: 'infants',
   message: 'message',
   fullName: 'fullName',
   email: 'email',
@@ -252,7 +241,6 @@ exports.Prisma.QueryMode = {
 
 exports.Prisma.ModelName = {
   Circuit: 'Circuit',
-  BlogPost: 'BlogPost',
   TripRequest: 'TripRequest',
   ContactMessage: 'ContactMessage',
   User: 'User',
