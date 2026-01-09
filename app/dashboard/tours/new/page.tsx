@@ -347,7 +347,7 @@ export default function AddTourPage() {
 
                 {/* Itinerary Glance & Optional */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-card border border-border rounded-lg p-6 space-y-4">
+                    {/* <div className="bg-card border border-border rounded-lg p-6 space-y-4">
                         <h3 className="font-semibold text-foreground">Itinerary Glance</h3>
                         <div className="flex gap-2">
                             <Input
@@ -377,7 +377,7 @@ export default function AddTourPage() {
                                 ))}
                             </div>
                         )}
-                    </div>
+                    </div> */}
 
                     <div className="bg-card border border-border rounded-lg p-6 space-y-4">
                         <h3 className="font-semibold text-foreground">Optional Activities</h3>

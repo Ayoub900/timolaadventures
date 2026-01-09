@@ -32,9 +32,9 @@ export function Footer() {
                                 <span className="sr-only">Whatsapp</span>
                                 <MessageCircle className="h-5 w-5" />
                             </Link>
-                            <Link href="https://www.tripadvisor.fr/UserReviewEdit-g488109-d32987585-Timola_Adventures-Imlil_Marrakech_Safi.html" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
+                            <Link href="https://www.tripadvisor.fr/UserReviewEdit-g488109-d32987585-Timola_Adventures-Imlil_Marrakech_Safi.html" target="_blank" className="text-muted-foreground pt-0.5 text-center hover:text-primary transition-colors">
                                 <span className="sr-only">TripAdvisor</span>
-                                <Star className="h-5 w-5" />
+                                <Image src="/link1.svg" alt="TripAdvisor" width={26} height={26} />
                             </Link>
                             <Link href="https://maps.app.goo.gl/DXMnq3ASZmdorYgcA" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
                                 <span className="sr-only">Google Maps</span>
@@ -92,9 +92,11 @@ export function Footer() {
                             Contact Us
                         </h3>
                         <ul className="space-y-3">
-                            <li className="flex items-start text-sm text-muted-foreground">
-                                <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0 text-primary" />
-                                <span>Morocco</span>
+                            <li className="">
+                                <Link href="https://maps.app.goo.gl/DXMnq3ASZmdorYgcA" target="_blank" className="flex items-start text-sm text-muted-foreground" >
+                                    <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0 text-primary" />
+                                    <span>Morocco</span>
+                                </Link>
                             </li>
                             <li className="flex items-center text-sm text-muted-foreground">
                                 <Phone className="w-4 h-4 mr-2 flex-shrink-0 text-primary" />
