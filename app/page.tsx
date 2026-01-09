@@ -243,21 +243,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Philosophy / Intro */}
-        <section id="about" className="py-24 bg-white border-b border-gray-100">
-          <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
-            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-secondary/20 text-primary text-xs font-bold uppercase tracking-widest mb-2">
-              Our Promise
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black text-foreground tracking-tight">Travel That Transforms</h2>
-            <p className="text-muted-foreground text-lg leading-relaxed font-light">
-              At Timola Adventures, we believe every journey should leave you changed. Our handcrafted itineraries
-              go beyond tourist trails to connect you with the soul of Morocco—its warm people, timeless traditions,
-              and breathtaking landscapes that have inspired travelers for centuries.
-            </p>
-          </div>
-        </section>
-
         {/* Featured Circuits */}
         <section className="py-24 bg-gray-50/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -402,6 +387,26 @@ export default function HomePage() {
                 <Link href="/tours">Start Exploring Now</Link>
               </Button>
             </div>
+          </div>
+        </section>
+
+        {/* Philosophy / Intro */}
+        <section id="about" className="py-24 bg-white border-b border-gray-100">
+          <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
+            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-secondary/20 text-primary text-xs font-bold uppercase tracking-widest mb-2">
+              About Us
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-foreground tracking-tight">Travel That Transforms</h2>
+            <p className="text-muted-foreground text-lg leading-relaxed font-light">
+              Timola Adventures was founded by Mustapha Id Ali Ouhammou, a certified tour guide officially recognized by the Moroccan Ministry of Tourism. With deep knowledge of Morocco’s landscapes, culture, and history, Mustapha created Timola Adventures to offer authentic, safe, and memorable travel experiences for visitors from around the world.
+              Built on a passion for exploration and cultural exchange, Timola Adventures specializes in immersive journeys that showcase the true spirit of Morocco. From majestic mountains and desert landscapes to traditional villages and hidden trails, each adventure is carefully designed to combine discovery, comfort, and authenticity.
+              <br />
+              <br />
+              Our team is committed to professionalism, safety, and responsible tourism. We work closely with local communities to ensure that our tours respect local traditions and contribute positively to the regions we explore. Every experience is guided with care, insight, and a personal touch that reflects our founder’s dedication to excellence.
+              <br />
+              <br />
+              At Timola Adventures, we believe that travel is more than visiting places, it’s about creating connections, sharing stories, and leaving with unforgettable memories. We invite you to explore Morocco with confidence, curiosity, and a true sense of adventure.
+            </p>
           </div>
         </section>
 
