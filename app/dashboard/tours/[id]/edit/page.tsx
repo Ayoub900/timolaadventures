@@ -363,7 +363,7 @@ export default function EditTourPage() {
                         existingImages={formData.images}
                         onImagesAdd={(urls) => setFormData(prev => ({ ...prev, images: [...prev.images, ...urls] }))}
                         onRemoveImage={(idx) => removeFromArray("images", idx)}
-                        max={1}
+                        max={6}
                     />
                 </div>
 

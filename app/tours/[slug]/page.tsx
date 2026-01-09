@@ -7,7 +7,16 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
-import { Clock, MapPin, Check, X, ArrowLeft, Info, Calendar, Plus, Heart } from "lucide-react"
+import { Clock, MapPin, Check, X, ArrowLeft, Info, Calendar, Plus, Heart, ChevronLeft, ChevronRight } from "lucide-react"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogClose,
+} from "@/components/ui/dialog"
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -80,6 +89,10 @@ export default function TourDetailPage() {
             return { ...prev, [type]: newVal }
         })
     }
+
+    // Gallery / Lightbox state
+    const [lightboxOpen, setLightboxOpen] = useState(false)
+    const [currentImage, setCurrentImage] = useState(0)
 
     // Update total guests whenever traveler counts change
     useEffect(() => {
@@ -271,23 +284,22 @@ export default function TourDetailPage() {
                             )}
 
                             {/* Itinerary - Minimal Timeline */}
-                            <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
 
-                                <div className="mt-10 pt-8 border-t border-border">
-                                    {tour.itineraryDetail && (
-                                        <>
-                                            <h3 className="text-lg font-semibold text-foreground mb-6 flex items-center gap-2">
-                                                <Info className="w-5 h-5 text-accent" />
-                                                Detailed Itinerary
-                                            </h3>
-                                            <div
-                                                className="prose prose-gray max-w-none text-muted-foreground leading-relaxed"
-                                                dangerouslySetInnerHTML={{ __html: renderRichText(tour.itineraryDetail) }}
-                                            />
-                                        </>
-                                    )}
+
+                            {tour.itineraryDetail && (
+                                <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+
+                                    <h2 className="text-2xl font-semibold text-foreground mb-6">
+                                        Detailed Itinerary
+                                    </h2>
+                                    <div
+                                        className="prose prose-gray max-w-none text-muted-foreground leading-relaxed"
+                                        dangerouslySetInnerHTML={{ __html: renderRichText(tour.itineraryDetail) }}
+                                    />
+
                                 </div>
-                            </div>
+                            )}
+
 
                             {/* What to Bring */}
                             {tour.whatToBring && tour.whatToBring.length > 0 && (
@@ -390,6 +402,70 @@ export default function TourDetailPage() {
                                         className="prose prose-gray max-w-none text-muted-foreground leading-relaxed"
                                         dangerouslySetInnerHTML={{ __html: renderRichText(tour.additionalInfo) }}
                                     />
+                                </div>
+                            )}
+
+                            {/* Gallery */}
+                            {tour.images && tour.images.length > 0 && (
+                                <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                                    <h2 className="text-2xl font-semibold text-foreground mb-6">Gallery</h2>
+
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                                        {tour.images.map((img, idx) => (
+                                            <button
+                                                key={idx}
+                                                type="button"
+                                                onClick={() => { setCurrentImage(idx); setLightboxOpen(true); }}
+                                                className="relative overflow-hidden rounded-lg"
+                                            >
+                                                <Image
+                                                    src={img}
+                                                    alt={`${tour.name} image ${idx + 1}`}
+                                                    width={600}
+                                                    height={420}
+                                                    className="object-cover w-full h-36"
+                                                    draggable={false}
+                                                />
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+                                        <DialogContent className="w-full bg-white/90 sm:max-w-5xl p-0 border-0 shadow-none">
+                                            <div className="relative flex items-center justify-center p-4">
+                                                {/* <DialogClose className="absolute top-4 right-4 text-white bg-black/30 rounded-full p-2 hover:bg-black/40">
+                                                <X className="w-5 h-5" />
+                                            </DialogClose> */}
+
+                                                <button
+                                                    onClick={() => setCurrentImage((i) => (i - 1 + tour.images.length) % tour.images.length)}
+                                                    aria-label="Previous image"
+                                                    className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 rounded-full p-2 hover:bg-black/40"
+                                                >
+                                                    <ChevronLeft className="w-5 h-5" />
+                                                </button>
+
+                                                <div className="max-w-5xl max-h-[90vh] w-full flex items-center justify-center">
+                                                    <Image
+                                                        src={tour.images[currentImage]}
+                                                        alt={`${tour.name} large`}
+                                                        width={1600}
+                                                        height={900}
+                                                        className="object-contain mx-auto max-h-[80vh]"
+                                                        draggable={false}
+                                                    />
+                                                </div>
+
+                                                <button
+                                                    onClick={() => setCurrentImage((i) => (i + 1) % tour.images.length)}
+                                                    aria-label="Next image"
+                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 rounded-full p-2 hover:bg-black/40"
+                                                >
+                                                    <ChevronRight className="w-5 h-5" />
+                                                </button>
+                                            </div>
+                                        </DialogContent>
+                                    </Dialog>
                                 </div>
                             )}
 
@@ -588,7 +664,7 @@ export default function TourDetailPage() {
                         </div>
                     </div>
                 </div>
-            </main>
+            </main >
 
             <Footer />
         </div >
