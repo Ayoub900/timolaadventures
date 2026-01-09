@@ -238,7 +238,7 @@ export default function EditTourPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="price">Price (USD) *</Label>
+                            <Label htmlFor="price">Price (EUR) *</Label>
                             <Input
                                 id="price"
                                 type="number"

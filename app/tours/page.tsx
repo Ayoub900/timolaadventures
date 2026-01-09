@@ -77,53 +77,44 @@ export default function ToursPage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                             {tours.map((tour) => (
-                                <Link key={tour.id} href={`/tours/${tour.slug}`} className="group block">
-                                    <div className="bg-white rounded-md overflow-hidden shadow-[0_2px_20px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 h-full flex flex-col transform hover:-translate-y-1">
+                                <Link key={tour.id} href={`/tours/${tour.slug}`} className="group block h-full">
+                                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-border/40 group-hover:border-primary/20">
                                         <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                                             {tour.images[0] ? (
                                                 <Image
                                                     src={tour.images[0]}
                                                     alt={tour.name}
                                                     fill
-                                                    className="object-cover transform group-hover:scale-110 transition-transform duration-700"
+                                                    className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                                                 />
                                             ) : (
-                                                <div className="flex items-center justify-center h-full text-gray-300 bg-gray-50">
-                                                    <span className="text-sm">No Image</span>
-                                                </div>
+                                                <div className="flex items-center justify-center h-full text-gray-400 text-sm">No Image</div>
                                             )}
-
                                             <div className="absolute top-4 left-4">
-                                                <span className="inline-block px-3 py-1 rounded-md bg-white/95 text-xs font-semibold text-gray-700 uppercase tracking-wide shadow-sm border border-gray-100">
+                                                <span className="inline-block px-3 py-1 rounded-full bg-white/90 text-[10px] font-bold uppercase tracking-wider text-primary shadow-sm backdrop-blur-sm">
                                                     {tour.category}
                                                 </span>
                                             </div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+
+                                            <div className="absolute bottom-4 left-4 right-4 text-white">
+                                                <div className="flex items-center justify-between text-sm font-medium">
+                                                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {tour.duration} Days</span>
+                                                    <span className="font-bold text-lg text-secondary">€{tour.price}</span>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <div className="p-8 flex flex-col flex-1">
-                                            <div className="mb-4">
-                                                <div className="flex items-center justify-between text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">
-                                                    <span>{tour.duration} Days</span>
-                                                    <div className="flex flex-col">
-                                                        <div className="flex flex-col items-baseline">
-                                                            <p className="text-xl text-foreground font-bold">${tour.price} <span className="text-muted-foreground text-sm font-medium">/ person</span></p>
-                                                            {tour.originalPrice != null && (
-                                                                <span className="text-sm text-muted-foreground line-through">${tour.originalPrice}</span>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <h3 className="text-2xl font-bold text-gray-800 group-hover:text-primary transition-colors leading-tight">
-                                                    {tour.name}
-                                                </h3>
-                                            </div>
-
-                                            <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-2 flex-1 font-light">
+                                        <div className="p-6 flex flex-col flex-1">
+                                            <h3 className="text-xl font-bold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
+                                                {tour.name}
+                                            </h3>
+                                            <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-6 font-light">
                                                 {tour.description}
                                             </p>
-
-                                            <div className="flex items-center text-gray-900 font-medium text-sm group-hover:translate-x-2 transition-transform duration-300">
-                                                View Itinerary <ArrowRight className="ml-2 h-4 w-4 text-primary" />
+                                            <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between text-sm">
+                                                <span className="font-semibold text-primary group-hover:underline">View Details</span>
+                                                <ArrowRight className="w-4 h-4 text-primary transform group-hover:translate-x-1 transition-transform" />
                                             </div>
                                         </div>
                                     </div>

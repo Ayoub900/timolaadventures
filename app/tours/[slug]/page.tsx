@@ -267,6 +267,53 @@ export default function TourDetailPage() {
                                 </p>
                             </div>
 
+                            {/* Itinerary - Minimal Timeline */}
+                            {tour.itineraryDetail && (
+                                <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+
+                                    <h2 className="text-2xl font-semibold text-foreground mb-6">
+                                        Detailed Itinerary
+                                    </h2>
+                                    <div
+                                        className="prose prose-gray max-w-none text-muted-foreground leading-relaxed"
+                                        dangerouslySetInnerHTML={{ __html: renderRichText(tour.itineraryDetail) }}
+                                    />
+
+                                </div>
+                            )}
+
+                            {/* Inclusions - Soft Lists */}
+                            <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                    <div>
+                                        <h3 className="text-sm font-bold text-foreground uppercase tracking-widest mb-6 flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-secondary" /> Included
+                                        </h3>
+                                        <ul className="space-y-4">
+                                            {tour.included.map((item, index) => (
+                                                <li key={index} className="flex items-start text-gray-600 text-sm font-medium">
+                                                    <Check className="w-4 h-4 mr-3 mt-0.5 text-secondary flex-shrink-0" />
+                                                    <span className="text-muted-foreground">{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-sm font-bold text-foreground uppercase tracking-widest mb-6 flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-destructive/30" /> Not Included
+                                        </h3>
+                                        <ul className="space-y-4">
+                                            {tour.excluded.map((item, index) => (
+                                                <li key={index} className="flex items-start text-gray-500 text-sm">
+                                                    <X className="w-4 h-4 mr-3 mt-0.5 text-destructive flex-shrink-0" />
+                                                    <span className="text-muted-foreground">{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Highlights */}
                             {tour.highlights.length > 0 && (
                                 <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
@@ -282,24 +329,6 @@ export default function TourDetailPage() {
                                     </ul>
                                 </div>
                             )}
-
-                            {/* Itinerary - Minimal Timeline */}
-
-
-                            {tour.itineraryDetail && (
-                                <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-
-                                    <h2 className="text-2xl font-semibold text-foreground mb-6">
-                                        Detailed Itinerary
-                                    </h2>
-                                    <div
-                                        className="prose prose-gray max-w-none text-muted-foreground leading-relaxed"
-                                        dangerouslySetInnerHTML={{ __html: renderRichText(tour.itineraryDetail) }}
-                                    />
-
-                                </div>
-                            )}
-
 
                             {/* What to Bring */}
                             {tour.whatToBring && tour.whatToBring.length > 0 && (
@@ -346,37 +375,6 @@ export default function TourDetailPage() {
                                 </div>
                             )}
 
-                            {/* Inclusions - Soft Lists */}
-                            <div className="bg-card rounded-lg p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                                    <div>
-                                        <h3 className="text-sm font-bold text-foreground uppercase tracking-widest mb-6 flex items-center gap-2">
-                                            <span className="w-2 h-2 rounded-full bg-secondary" /> Included
-                                        </h3>
-                                        <ul className="space-y-4">
-                                            {tour.included.map((item, index) => (
-                                                <li key={index} className="flex items-start text-gray-600 text-sm font-medium">
-                                                    <Check className="w-4 h-4 mr-3 mt-0.5 text-secondary flex-shrink-0" />
-                                                    <span className="text-muted-foreground">{item}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-sm font-bold text-foreground uppercase tracking-widest mb-6 flex items-center gap-2">
-                                            <span className="w-2 h-2 rounded-full bg-destructive/30" /> Not Included
-                                        </h3>
-                                        <ul className="space-y-4">
-                                            {tour.excluded.map((item, index) => (
-                                                <li key={index} className="flex items-start text-gray-500 text-sm">
-                                                    <X className="w-4 h-4 mr-3 mt-0.5 text-destructive flex-shrink-0" />
-                                                    <span className="text-muted-foreground">{item}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
 
                             {/* Optional Activities */}
                             {tour.optional && tour.optional.length > 0 && (

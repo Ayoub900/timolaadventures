@@ -290,7 +290,7 @@ export default function HomePage() {
                         <div className="absolute bottom-4 left-4 right-4 text-white">
                           <div className="flex items-center justify-between text-sm font-medium">
                             <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {circuit.duration} Days</span>
-                            <span className="font-bold text-lg text-secondary">${circuit.price}</span>
+                            <span className="font-bold text-lg text-secondary">€{circuit.price}</span>
                           </div>
                         </div>
                       </div>
