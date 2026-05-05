@@ -30,6 +30,12 @@
     "react-dom": "19.2.0",
     "tailwind-merge": "^3.4.0"
   },
+  "browserslist": [
+    "chrome >= 90",
+    "firefox >= 90",
+    "safari >= 14",
+    "edge >= 90"
+  ],
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/jsonwebtoken": "^9.0.10",

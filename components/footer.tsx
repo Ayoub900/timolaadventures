@@ -18,6 +18,7 @@ export function Footer() {
                                 width={150}
                                 height={150}
                                 className="h-32 mx-auto w-auto object-contain"
+                                sizes="150px"
                             />
                         </Link>
                         <p className="text-sm text-muted-foreground">
