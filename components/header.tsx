@@ -60,6 +60,7 @@ export function Header() {
                                 height={60}
                                 className="h-12 w-auto object-contain"
                                 sizes="180px"
+                                quality={70}
                                 priority
                             />
                         </Link>

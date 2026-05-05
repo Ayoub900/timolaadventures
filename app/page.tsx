@@ -21,7 +21,8 @@ const FAQSection = dynamic(() => import("@/components/faq-section"), { ssr: true
 const TestimonialsSection = dynamic(() => import("@/components/testimonials-section"), { ssr: true })
 const ContactSection = dynamic(() => import("@/components/contact-section"), { ssr: true })
 
-const heroImages: StaticImageData[] = [bg1, bg2, bg3, bg4, bg5, bg6]
+const heroImages: StaticImageData[] = [bg2, bg3, bg4, bg5, bg6]
+const HERO_COUNT = 6
 
 interface Circuit {
   id: string
@@ -41,7 +42,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length)
+      setCurrentHeroIndex((prev) => (prev + 1) % HERO_COUNT)
     }, 6000)
     return () => clearInterval(interval)
   }, [])
@@ -73,8 +74,7 @@ export default function HomePage() {
         <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
           {/* Background */}
           <div className="absolute inset-0 z-0">
-            {/* LCP image rendered first with explicit priority/fetchpriority */}
-            <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${0 === currentHeroIndex ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentHeroIndex === 0 ? 'opacity-100' : 'opacity-0'}`}>
               <Image
                 src={bg1}
                 alt="Morocco Atlas Mountains Hiking 1"
@@ -84,10 +84,9 @@ export default function HomePage() {
                 quality={55}
                 placeholder="blur"
                 priority
-                fetchPriority="high"
               />
             </div>
-            {heroImages.slice(1).map((image, idx) => (
+            {heroImages.map((image, idx) => (
               <div
                 key={idx + 1}
                 className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${idx + 1 === currentHeroIndex ? 'opacity-100' : 'opacity-0'}`}
