@@ -1,69 +1,19 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { HeroCarousel } from "@/components/hero-carousel"
 import Link from "next/link"
 import Image from "next/image"
-import type { StaticImageData } from "next/image"
 import { MapPin, ArrowRight, Star, Shield, Heart, Clock, MousePointerClick, Settings2, CalendarCheck, Map } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-import bg1 from "@/public/bg1.jpeg"
-import bg2 from "@/public/bg2.jpeg"
-import bg3 from "@/public/bg3.jpeg"
-import bg4 from "@/public/bg4.jpeg"
-import bg5 from "@/public/bg5.jpeg"
-import bg6 from "@/public/bg6.jpeg"
+import { getFeaturedTours } from "@/lib/tours"
 
 const FAQSection = dynamic(() => import("@/components/faq-section"), { ssr: true })
 const TestimonialsSection = dynamic(() => import("@/components/testimonials-section"), { ssr: true })
 const ContactSection = dynamic(() => import("@/components/contact-section"), { ssr: true })
 
-const heroImages: StaticImageData[] = [bg2, bg3, bg4, bg5, bg6]
-const HERO_COUNT = 6
-
-interface Circuit {
-  id: string
-  slug: string
-  name: string
-  description: string
-  duration: number
-  price: number
-  images: string[]
-  category: string
-}
-
-export default function HomePage() {
-  const [circuits, setCircuits] = useState<Circuit[]>([])
-  const [loading, setLoading] = useState(true)
-  const [currentHeroIndex, setCurrentHeroIndex] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentHeroIndex((prev) => (prev + 1) % HERO_COUNT)
-    }, 6000)
-    return () => clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    fetchFeaturedCircuits()
-  }, [])
-
-  const fetchFeaturedCircuits = async () => {
-    try {
-      const response = await fetch("/api/tours?featured=true")
-      if (response.ok) {
-        const data = await response.json()
-        setCircuits(data.slice(0, 3))
-      }
-    } catch (error) {
-      console.error("Failed to fetch circuits:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
+export default async function HomePage() {
+  const circuits = (await getFeaturedTours()).slice(0, 3)
 
   return (
     <div className="min-h-screen bg-background/50 flex flex-col font-sans">
@@ -72,40 +22,7 @@ export default function HomePage() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-          {/* Background */}
-          <div className="absolute inset-0 z-0">
-            <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentHeroIndex === 0 ? 'opacity-100' : 'opacity-0'}`}>
-              <Image
-                src={bg1}
-                alt="Morocco Atlas Mountains Hiking 1"
-                fill
-                className="object-cover"
-                sizes="100vw"
-                quality={55}
-                placeholder="blur"
-                priority
-              />
-            </div>
-            {heroImages.map((image, idx) => (
-              <div
-                key={idx + 1}
-                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${idx + 1 === currentHeroIndex ? 'opacity-100' : 'opacity-0'}`}
-              >
-                <Image
-                  src={image}
-                  alt={`Morocco Atlas Mountains Hiking ${idx + 2}`}
-                  fill
-                  className="object-cover"
-                  sizes="100vw"
-                  quality={55}
-                  placeholder="empty"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
-          </div>
+          <HeroCarousel />
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-20">
             <div className="max-w-3xl animate-fade-in-up space-y-8">
@@ -150,61 +67,53 @@ export default function HomePage() {
               </p>
             </div>
 
-            {loading ? (
-              <div className="flex justify-center py-20">
-                <div className="w-2 h-2 bg-primary/60 rounded-full animate-bounce mr-1"></div>
-                <div className="w-2 h-2 bg-primary/60 rounded-full animate-bounce mr-1 delay-75"></div>
-                <div className="w-2 h-2 bg-primary/60 rounded-full animate-bounce delay-150"></div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {circuits.map((circuit) => (
-                  <Link key={circuit.id} href={`/tours/${circuit.slug}`} className="group block h-full">
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-border/40 group-hover:border-primary/20">
-                      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                        {circuit.images[0] ? (
-                          <Image
-                            src={circuit.images[0]}
-                            alt={circuit.name}
-                            fill
-                            sizes="(max-width: 768px) calc(100vw - 32px), (max-width: 1280px) calc(33vw - 32px), 390px"
-                            className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center h-full text-gray-400 text-sm">No Image</div>
-                        )}
-                        <div className="absolute top-4 left-4">
-                          <span className="inline-block px-3 py-1 rounded-full bg-white/90 text-[10px] font-bold uppercase tracking-wider text-primary shadow-sm backdrop-blur-sm">
-                            {circuit.category}
-                          </span>
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
-
-                        <div className="absolute bottom-4 left-4 right-4 text-white">
-                          <div className="flex items-center justify-between text-sm font-medium">
-                            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {circuit.duration} Days</span>
-                            <span className="font-bold text-lg text-secondary">€{circuit.price}</span>
-                          </div>
-                        </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {circuits.map((circuit) => (
+                <Link key={circuit.id} href={`/tours/${circuit.slug}`} className="group block h-full">
+                  <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-border/40 group-hover:border-primary/20">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                      {circuit.images[0] ? (
+                        <Image
+                          src={circuit.images[0]}
+                          alt={circuit.name}
+                          fill
+                          sizes="(max-width: 768px) calc(100vw - 32px), (max-width: 1280px) calc(33vw - 32px), 390px"
+                          className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-gray-400 text-sm">No Image</div>
+                      )}
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-block px-3 py-1 rounded-full bg-white/90 text-[10px] font-bold uppercase tracking-wider text-primary shadow-sm backdrop-blur-sm">
+                          {circuit.category}
+                        </span>
                       </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
 
-                      <div className="p-6 flex flex-col flex-1">
-                        <h3 className="text-xl font-bold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
-                          {circuit.name}
-                        </h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-6 font-light">
-                          {circuit.description}
-                        </p>
-                        <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between text-sm">
-                          <span className="font-semibold text-primary group-hover:underline">View Details</span>
-                          <ArrowRight className="w-4 h-4 text-primary transform group-hover:translate-x-1 transition-transform" />
+                      <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <div className="flex items-center justify-between text-sm font-medium">
+                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {circuit.duration} Days</span>
+                          <span className="font-bold text-lg text-secondary">€{circuit.price}</span>
                         </div>
                       </div>
                     </div>
-                  </Link>
-                ))}
-              </div>
-            )}
+
+                    <div className="p-6 flex flex-col flex-1">
+                      <h3 className="text-xl font-bold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
+                        {circuit.name}
+                      </h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-6 font-light">
+                        {circuit.description}
+                      </p>
+                      <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between text-sm">
+                        <span className="font-semibold text-primary group-hover:underline">View Details</span>
+                        <ArrowRight className="w-4 h-4 text-primary transform group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
 
             <div className="mt-12 text-center">
               <Button asChild className="rounded-full px-6 font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
@@ -391,9 +300,9 @@ export default function HomePage() {
         </section>
 
         <ContactSection />
-      </main >
+      </main>
 
       <Footer />
-    </div >
+    </div>
   )
 }
