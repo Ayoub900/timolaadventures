@@ -1,6 +1,17 @@
 "use client"
 
+import { useState, useEffect } from "react"
+
 export function WhatsAppButton() {
+    const [visible, setVisible] = useState(false)
+
+    useEffect(() => {
+        const timer = setTimeout(() => setVisible(true), 3000)
+        return () => clearTimeout(timer)
+    }, [])
+
+    if (!visible) return null
+
     const whatsappNumber = "212623425783"
     const whatsappLink = `https://wa.me/${whatsappNumber}`
 
