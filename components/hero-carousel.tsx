@@ -61,6 +61,7 @@ export function HeroCarousel() {
               quality={55}
               placeholder={idx === 0 ? "blur" : "empty"}
               priority={idx === 0}
+              fetchPriority={idx === 0 ? "high" : "auto"}
             />
           </div>
         )
