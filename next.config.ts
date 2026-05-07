@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     experimental: {
-        inlineCss: true,
+        // inlineCss: true,
     },
     images: {
         remotePatterns: [
@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
                 hostname: 'images.unsplash.com',
             },
         ],
-        formats: ['image/avif', 'image/webp'],
+        formats: ['image/webp'],
         minimumCacheTTL: 31536000,
     },
 };
