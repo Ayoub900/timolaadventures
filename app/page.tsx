@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { HeroCarousel } from "@/components/hero-carousel"
@@ -7,10 +6,9 @@ import Image from "next/image"
 import { MapPin, ArrowRight, Star, Shield, Heart, Clock, MousePointerClick, Settings2, CalendarCheck, Map } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getFeaturedTours } from "@/lib/tours"
-
-const FAQSection = dynamic(() => import("@/components/faq-section"), { ssr: true })
-const TestimonialsSection = dynamic(() => import("@/components/testimonials-section"), { ssr: true })
-const ContactSection = dynamic(() => import("@/components/contact-section"), { ssr: true })
+import FAQSection from "@/components/faq-section"
+import TestimonialsSection from "@/components/testimonials-section"
+import ContactSection from "@/components/contact-section"
 
 export default async function HomePage() {
   const circuits = (await getFeaturedTours()).slice(0, 3)
